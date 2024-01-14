@@ -13,10 +13,9 @@ function MyStack() {
         <Stack.Navigator
             screenOptions={{
                 headerStyle: {
-                    backgroundColor: '#E8364F', // ustawienie koloru tła nagłówka na czerwony
+                    backgroundColor: '#E8364F',
                 },
-                headerTintColor: '#fff', // ustawienie koloru elementów nagłówka (np. tytułu, przycisków) na biały
-                headerTitleAlign: 'center'
+                headerTintColor: '#fff',
             }}
         >
             <Stack.Screen name="SplashScreen" component={SplashScreen} options={{ headerShown: false }} />
