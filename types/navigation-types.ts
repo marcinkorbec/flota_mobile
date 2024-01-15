@@ -9,3 +9,4 @@ export type RootStackParamList = {
 
 export type SplashScreenNavigationProp = StackNavigationProp<RootStackParamList, 'LoginScreen'>;
 export type LoginScreenNavigationProp = StackNavigationProp<RootStackParamList, 'HomeScreen'>;
+export type HomeScreenNavigationProp = StackNavigationProp<RootStackParamList, 'HomeScreen'>;
