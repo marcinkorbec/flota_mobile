@@ -1,6 +1,14 @@
 import React from 'react';
-import { View, Text, StyleSheet, ScrollView, TouchableOpacity } from 'react-native';
+import { View, Text, StyleSheet, ScrollView, TouchableOpacity, StatusBar } from 'react-native';
 import { Ionicons } from '@expo/vector-icons';
+import { HomeScreenNavigationProp } from '../../types/navigation-types';
+import { MaterialCommunityIcons } from '@expo/vector-icons';
+// import { changeNavigationBarColor } from 'react-native-navigation-bar-color';
+
+
+type DrawerParamList = {
+    Home: undefined;
+};
 
 type Tankowanie = {
     data: string;
@@ -35,10 +43,42 @@ const mojeTankowania: Tankowanie[] = [
     { data: '2023-04-15', kwota: 300.00, waluta: 'PLN', przebieg: 15230 },
 ];
 
-const HomeScreen = () => {
+const HomeScreen = ({ navigation }: { navigation: HomeScreenNavigationProp }) => {
+    React.useLayoutEffect(() => {
+        navigation.setOptions({
+            headerTitleAlign: 'center',
+            headerLeft: () => (
+                <TouchableOpacity
+                    onPress={() => navigation.toggleDrawer()}
+                    style={{ marginLeft: 10, backgroundColor: 'transparent' }} // Dodaj tutaj wszystkie potrzebne style
+                >
+                    <Ionicons name="menu" size={30} color="#fff" />
+                </TouchableOpacity>
+            ),
+        });
+    }, [navigation]);
+
+    //@TODO - zmienić kolor paska nawigacji
+    // React.useEffect(() => {
+    //     changeNavigationBarColor('#E8364F', true); // drugi argument określa, czy pasek nawigacji powinien być jasny czy ciemny
+    // }, []);
+
     return (
         <>
+            <StatusBar barStyle="light-content" backgroundColor="#E8364F" />
             <ScrollView style={styles.container}>
+                <View style={styles.consumptionContainer}>
+                    <View style={styles.consumptionBox}>
+                        <MaterialCommunityIcons name="fuel" size={24} color="#E8364F" />
+                        <Text style={styles.consumptionValue}>8,9 l/100km</Text>
+                        <Text style={styles.consumptionText}>Średnie spalanie</Text>
+                    </View>
+                    <View style={styles.consumptionBox}>
+                        <MaterialCommunityIcons name="fire" size={24} color="#E8364F" />
+                        <Text style={styles.consumptionValue}>9.0 l/100km</Text>
+                        <Text style={styles.consumptionText}>Ostatnie spalanie</Text>
+                    </View>
+                </View>
                 <View style={styles.table}>
                     <View style={styles.tableRow}>
                         <Text style={styles.tableHeader}>Data</Text>
@@ -102,6 +142,24 @@ const styles = StyleSheet.create({
         shadowOpacity: 0.3,
         shadowOffset: { width: 0, height: 2 },
         shadowRadius: 4,
+    },
+    consumptionContainer: {
+        flexDirection: 'row',
+        justifyContent: 'space-around',
+        padding: 10,
+        backgroundColor: '#fff',
+    },
+    consumptionBox: {
+        alignItems: 'center',
+    },
+    consumptionValue: {
+        fontSize: 18,
+        fontWeight: 'bold',
+        color: '#000',
+    },
+    consumptionText: {
+        fontSize: 16,
+        color: '#665',
     },
 });
 
