@@ -1,56 +1,65 @@
-import React from 'react';
+import React, { useState } from 'react';
 import { View, Text, StyleSheet, ScrollView, TouchableOpacity, StatusBar } from 'react-native';
 import { Ionicons } from '@expo/vector-icons';
 import { HomeScreenNavigationProp } from '../../types/navigation-types';
 import { MaterialCommunityIcons } from '@expo/vector-icons';
 // import { changeNavigationBarColor } from 'react-native-navigation-bar-color';
+import { CustomModal } from './CustomModal/CustomModal';
 
 
 type DrawerParamList = {
     Home: undefined;
 };
 
-type Tankowanie = {
+interface Tankowanie {
     data: string;
     kwota: number;
     waluta: string;
     przebieg: number;
-};
+    photo: string | null;
+}
+
+interface HomeScreenProps {
+    navigation: HomeScreenNavigationProp;
+}
 
 const mojeTankowania: Tankowanie[] = [
-    { data: '2023-04-01', kwota: 250.00, waluta: 'PLN', przebieg: 15000 },
-    { data: '2023-04-01', kwota: 250.00, waluta: 'PLN', przebieg: 15000 },
-    { data: '2023-04-01', kwota: 250.00, waluta: 'PLN', przebieg: 15000 },
-    { data: '2023-04-01', kwota: 250.00, waluta: 'PLN', przebieg: 15000 },
-    { data: '2023-04-01', kwota: 250.00, waluta: 'PLN', przebieg: 15000 },
-    { data: '2023-04-01', kwota: 250.00, waluta: 'PLN', przebieg: 15000 },
-    { data: '2023-04-01', kwota: 250.00, waluta: 'PLN', przebieg: 15000 },
-    { data: '2023-04-01', kwota: 250.00, waluta: 'PLN', przebieg: 15000 },
-    { data: '2023-04-01', kwota: 250.00, waluta: 'PLN', przebieg: 15000 },
-    { data: '2023-04-01', kwota: 250.00, waluta: 'PLN', przebieg: 15000 },
-    { data: '2023-04-01', kwota: 250.00, waluta: 'PLN', przebieg: 15000 },
-    { data: '2023-04-01', kwota: 250.00, waluta: 'PLN', przebieg: 15000 },
-    { data: '2023-04-01', kwota: 250.00, waluta: 'PLN', przebieg: 15000 },
-    { data: '2023-04-01', kwota: 250.00, waluta: 'PLN', przebieg: 15000 },
-    { data: '2023-04-15', kwota: 310.00, waluta: 'PLN', przebieg: 15230 },
-    { data: '2023-04-15', kwota: 200.00, waluta: 'PLN', przebieg: 15230 },
-    { data: '2023-04-15', kwota: 100.00, waluta: 'PLN', przebieg: 15230 },
-    { data: '2023-04-15', kwota: 390.00, waluta: 'PLN', przebieg: 15230 },
-    { data: '2023-04-15', kwota: 520.00, waluta: 'PLN', przebieg: 15230 },
-    { data: '2023-04-15', kwota: 300.00, waluta: 'PLN', przebieg: 15230 },
-    { data: '2023-04-15', kwota: 300.00, waluta: 'PLN', przebieg: 15230 },
-    { data: '2023-04-15', kwota: 300.00, waluta: 'PLN', przebieg: 15230 },
-    { data: '2023-04-15', kwota: 300.00, waluta: 'PLN', przebieg: 15230 },
+    { data: '2023-04-01', kwota: 250.00, waluta: 'PLN', przebieg: 15000, photo: null },
+    { data: '2023-04-01', kwota: 250.00, waluta: 'PLN', przebieg: 15000, photo: null },
+    { data: '2023-04-01', kwota: 250.00, waluta: 'PLN', przebieg: 15000, photo: null },
+    { data: '2023-04-01', kwota: 250.00, waluta: 'PLN', przebieg: 15000, photo: null },
+    { data: '2023-04-01', kwota: 250.00, waluta: 'PLN', przebieg: 15000, photo: null },
+    { data: '2023-04-01', kwota: 250.00, waluta: 'PLN', przebieg: 15000, photo: null },
+    { data: '2023-04-01', kwota: 250.00, waluta: 'PLN', przebieg: 15000, photo: null },
+    { data: '2023-04-01', kwota: 250.00, waluta: 'PLN', przebieg: 15000, photo: null },
+    { data: '2023-04-01', kwota: 250.00, waluta: 'PLN', przebieg: 15000, photo: null },
+    { data: '2023-04-01', kwota: 250.00, waluta: 'PLN', przebieg: 15000, photo: null },
+    { data: '2023-04-01', kwota: 250.00, waluta: 'PLN', przebieg: 15000, photo: null },
+    { data: '2023-04-01', kwota: 250.00, waluta: 'PLN', przebieg: 15000, photo: null },
+    { data: '2023-04-01', kwota: 250.00, waluta: 'PLN', przebieg: 15000, photo: null },
+    { data: '2023-04-01', kwota: 250.00, waluta: 'PLN', przebieg: 15000, photo: null },
+    { data: '2023-04-15', kwota: 310.00, waluta: 'PLN', przebieg: 15230, photo: null },
+    { data: '2023-04-15', kwota: 200.00, waluta: 'PLN', przebieg: 15230, photo: null },
+    { data: '2023-04-15', kwota: 100.00, waluta: 'PLN', przebieg: 15230, photo: null },
+    { data: '2023-04-15', kwota: 390.00, waluta: 'PLN', przebieg: 15230, photo: null },
+    { data: '2023-04-15', kwota: 520.00, waluta: 'PLN', przebieg: 15230, photo: null },
+    { data: '2023-04-15', kwota: 300.00, waluta: 'PLN', przebieg: 15230, photo: null },
+    { data: '2023-04-15', kwota: 300.00, waluta: 'PLN', przebieg: 15230, photo: null },
+    { data: '2023-04-15', kwota: 300.00, waluta: 'PLN', przebieg: 15230, photo: null },
+    { data: '2023-04-15', kwota: 300.00, waluta: 'PLN', przebieg: 15230, photo: null },
 ];
 
 const HomeScreen = ({ navigation }: { navigation: HomeScreenNavigationProp }) => {
+    const [modalVisible, setModalVisible] = useState(false);
+    const [tankowanie, setTankowanie] = useState<Tankowanie>({ data: '', kwota: 0, waluta: '', przebieg: 0, photo: null });
+
     React.useLayoutEffect(() => {
         navigation.setOptions({
             headerTitleAlign: 'center',
             headerLeft: () => (
                 <TouchableOpacity
                     onPress={() => navigation.toggleDrawer()}
-                    style={{ marginLeft: 10, backgroundColor: 'transparent' }} // Dodaj tutaj wszystkie potrzebne style
+                    style={{ marginLeft: 10, backgroundColor: 'transparent' }}
                 >
                     <Ionicons name="menu" size={30} color="#fff" />
                 </TouchableOpacity>
@@ -96,9 +105,15 @@ const HomeScreen = ({ navigation }: { navigation: HomeScreenNavigationProp }) =>
                     ))}
                 </View>
             </ScrollView>
-            <TouchableOpacity style={styles.floatingButton}>
+            <TouchableOpacity style={styles.floatingButton} onPress={() => setModalVisible(true)}>
                 <Ionicons name="add" size={30} color="#fff" />
             </TouchableOpacity>
+            <CustomModal
+                modalVisible={modalVisible}
+                setModalVisible={setModalVisible}
+                tankowanie={tankowanie}
+                setTankowanie={setTankowanie}
+            />
         </>
     );
 };
