@@ -53,14 +53,14 @@ const mojeTankowania: Tankowanie[] = [
 
 const HomeScreen = ({ navigation }: { navigation: HomeScreenNavigationProp }) => {
     const [modalVisible, setModalVisible] = useState(false);
-    const [tankowanie, setTankowanie] = useState<Tankowanie>({ data: '', kwota: 0, waluta: '', przebieg: 0, photo: null });
+    //const [tankowanie, setTankowanie] = useState<Tankowanie>({ data: '', kwota: 0, waluta: '', przebieg: 0, photo: null });
 
     React.useLayoutEffect(() => {
         navigation.setOptions({
             headerTitleAlign: 'center',
             headerLeft: () => (
                 <TouchableOpacity
-                    onPress={() => navigation.toggleDrawer()}
+                    //onPress={() => navigation.toggleDrawer()}
                     style={{ marginLeft: 10, backgroundColor: 'transparent' }}
                 >
                     <Ionicons name="menu" size={30} color="#fff" />
@@ -111,10 +111,7 @@ const HomeScreen = ({ navigation }: { navigation: HomeScreenNavigationProp }) =>
                 <Ionicons name="add" size={30} color="#fff" />
             </TouchableOpacity>
             <CustomModal
-                modalVisible={modalVisible}
-                setModalVisible={setModalVisible}
-                tankowanie={tankowanie}
-                setTankowanie={setTankowanie}
+
             />
         </>
     );
