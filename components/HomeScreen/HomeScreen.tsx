@@ -17,6 +17,7 @@ interface Tankowanie {
     waluta: string;
     przebieg: number;
     photo: string | null;
+    litry: number;
 }
 
 interface HomeScreenProps {
@@ -24,29 +25,30 @@ interface HomeScreenProps {
 }
 
 const mojeTankowania: Tankowanie[] = [
-    { data: '2023-04-01', kwota: 250.00, waluta: 'PLN', przebieg: 15000, photo: null },
-    { data: '2023-04-01', kwota: 250.00, waluta: 'PLN', przebieg: 15000, photo: null },
-    { data: '2023-04-01', kwota: 250.00, waluta: 'PLN', przebieg: 15000, photo: null },
-    { data: '2023-04-01', kwota: 250.00, waluta: 'PLN', przebieg: 15000, photo: null },
-    { data: '2023-04-01', kwota: 250.00, waluta: 'PLN', przebieg: 15000, photo: null },
-    { data: '2023-04-01', kwota: 250.00, waluta: 'PLN', przebieg: 15000, photo: null },
-    { data: '2023-04-01', kwota: 250.00, waluta: 'PLN', przebieg: 15000, photo: null },
-    { data: '2023-04-01', kwota: 250.00, waluta: 'PLN', przebieg: 15000, photo: null },
-    { data: '2023-04-01', kwota: 250.00, waluta: 'PLN', przebieg: 15000, photo: null },
-    { data: '2023-04-01', kwota: 250.00, waluta: 'PLN', przebieg: 15000, photo: null },
-    { data: '2023-04-01', kwota: 250.00, waluta: 'PLN', przebieg: 15000, photo: null },
-    { data: '2023-04-01', kwota: 250.00, waluta: 'PLN', przebieg: 15000, photo: null },
-    { data: '2023-04-01', kwota: 250.00, waluta: 'PLN', przebieg: 15000, photo: null },
-    { data: '2023-04-01', kwota: 250.00, waluta: 'PLN', przebieg: 15000, photo: null },
-    { data: '2023-04-15', kwota: 310.00, waluta: 'PLN', przebieg: 15230, photo: null },
-    { data: '2023-04-15', kwota: 200.00, waluta: 'PLN', przebieg: 15230, photo: null },
-    { data: '2023-04-15', kwota: 100.00, waluta: 'PLN', przebieg: 15230, photo: null },
-    { data: '2023-04-15', kwota: 390.00, waluta: 'PLN', przebieg: 15230, photo: null },
-    { data: '2023-04-15', kwota: 520.00, waluta: 'PLN', przebieg: 15230, photo: null },
-    { data: '2023-04-15', kwota: 300.00, waluta: 'PLN', przebieg: 15230, photo: null },
-    { data: '2023-04-15', kwota: 300.00, waluta: 'PLN', przebieg: 15230, photo: null },
-    { data: '2023-04-15', kwota: 300.00, waluta: 'PLN', przebieg: 15230, photo: null },
-    { data: '2023-04-15', kwota: 300.00, waluta: 'PLN', przebieg: 15230, photo: null },
+    { data: '2023-04-01', kwota: 250.00, waluta: 'PLN', przebieg: 15000, photo: null, litry: 90 },
+    { data: '2023-04-01', kwota: 250.00, waluta: 'PLN', przebieg: 15000, photo: null, litry: 90 },
+    { data: '2023-04-01', kwota: 250.00, waluta: 'PLN', przebieg: 15000, photo: null, litry: 90 },
+    { data: '2023-04-01', kwota: 250.00, waluta: 'PLN', przebieg: 15000, photo: null, litry: 90 },
+    { data: '2023-04-01', kwota: 250.00, waluta: 'PLN', przebieg: 15000, photo: null, litry: 90 },
+    { data: '2023-04-01', kwota: 250.00, waluta: 'PLN', przebieg: 15000, photo: null, litry: 90 },
+    { data: '2023-04-01', kwota: 250.00, waluta: 'PLN', przebieg: 15000, photo: null, litry: 90 },
+    { data: '2023-04-01', kwota: 250.00, waluta: 'PLN', przebieg: 15000, photo: null, litry: 90 },
+    { data: '2023-04-01', kwota: 250.00, waluta: 'PLN', przebieg: 15000, photo: null, litry: 90 },
+    { data: '2023-04-01', kwota: 250.00, waluta: 'PLN', przebieg: 15000, photo: null, litry: 90 },
+    { data: '2023-04-01', kwota: 250.00, waluta: 'PLN', przebieg: 15000, photo: null, litry: 90 },
+    { data: '2023-04-01', kwota: 250.00, waluta: 'PLN', przebieg: 15000, photo: null, litry: 90 },
+    { data: '2023-04-01', kwota: 250.00, waluta: 'PLN', przebieg: 15000, photo: null, litry: 90 },
+    { data: '2023-04-01', kwota: 250.00, waluta: 'PLN', przebieg: 15000, photo: null, litry: 90 },
+    { data: '2023-04-15', kwota: 310.00, waluta: 'PLN', przebieg: 15230, photo: null, litry: 90 },
+    { data: '2023-04-15', kwota: 200.00, waluta: 'PLN', przebieg: 15230, photo: null, litry: 90 },
+    { data: '2023-04-15', kwota: 100.00, waluta: 'PLN', przebieg: 15230, photo: null, litry: 90 },
+    { data: '2023-04-15', kwota: 390.00, waluta: 'PLN', przebieg: 15230, photo: null, litry: 90 },
+    { data: '2023-04-15', kwota: 520.00, waluta: 'PLN', przebieg: 15230, photo: null, litry: 90 },
+    { data: '2023-04-15', kwota: 300.00, waluta: 'PLN', przebieg: 15230, photo: null, litry: 90 },
+    { data: '2023-04-15', kwota: 300.00, waluta: 'PLN', przebieg: 15230, photo: null, litry: 90 },
+    { data: '2023-04-15', kwota: 300.00, waluta: 'PLN', przebieg: 15230, photo: null, litry: 90 },
+    { data: '2023-04-15', kwota: 300.00, waluta: 'PLN', przebieg: 15230, photo: null, litry: 90 },
+
 ];
 
 const HomeScreen = ({ navigation }: { navigation: HomeScreenNavigationProp }) => {
