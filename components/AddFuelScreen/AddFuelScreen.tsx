@@ -5,11 +5,19 @@ import DropDownPicker from 'react-native-dropdown-picker';
 import { NavigationProp, RouteProp } from '@react-navigation/native';
 import { AddFuelScreenNavigationProp, RootStackParamList } from '../../types/navigation-types';
 import { StackNavigationProp } from '@react-navigation/stack';
+import * as Location from 'expo-location';
+
+type ImageInfo = ImagePicker.ImagePickerResult;
+
 
 
 interface AddFuelScreenProps {
     navigation: StackNavigationProp<RootStackParamList, 'AddFuelScreen'>;
 }
+
+type MyImagePickerResult = ImagePicker.ImagePickerResult & {
+    uri: string;
+};
 
 interface Tankowanie {
     data: string;
@@ -20,10 +28,52 @@ interface Tankowanie {
     litry: number;
 }
 
-interface ImagePickerResponse {
-    cancelled: boolean;
-    uri: string;
-}
+const isoCurrencyMap: { [key: string]: string } = {
+    'AL': 'ALL', // Albania
+    'AD': 'EUR', // Andora
+    'AT': 'EUR', // Austria
+    'BY': 'BYN', // Białoruś
+    'BE': 'EUR', // Belgia
+    'BA': 'BAM', // Bośnia i Hercegowina
+    'BG': 'BGN', // Bułgaria
+    'HR': 'HRK', // Chorwacja
+    'CY': 'EUR', // Cypr
+    'CZ': 'CZK', // Czechy
+    'DK': 'DKK', // Dania
+    'EE': 'EUR', // Estonia
+    'FI': 'EUR', // Finlandia
+    'FR': 'EUR', // Francja
+    'GR': 'EUR', // Grecja
+    'ES': 'EUR', // Hiszpania
+    'NL': 'EUR', // Holandia
+    'IE': 'EUR', // Irlandia
+    'IS': 'ISK', // Islandia
+    'LI': 'CHF', // Liechtenstein
+    'LT': 'EUR', // Litwa
+    'LU': 'EUR', // Luksemburg
+    'LV': 'EUR', // Łotwa
+    'MT': 'EUR', // Malta
+    'MD': 'MDL', // Mołdawia
+    'MC': 'EUR', // Monako
+    'DE': 'EUR', // Niemcy
+    'NO': 'NOK', // Norwegia
+    'PL': 'PLN', // Polska
+    'PT': 'EUR', // Portugalia
+    'RU': 'RUB', // Rosja
+    'RO': 'RON', // Rumunia
+    'SM': 'EUR', // San Marino
+    'RS': 'RSD', // Serbia
+    'SK': 'EUR', // Słowacja
+    'SI': 'EUR', // Słowenia
+    'CH': 'CHF', // Szwajcaria
+    'SE': 'SEK', // Szwecja
+    'TR': 'TRY', // Turcja
+    'UA': 'UAH', // Ukraina
+    'HU': 'HUF', // Węgry
+    'GB': 'GBP', // Wielka Brytania
+    'IT': 'EUR', // Włochy
+};
+
 
 export const AddFuelScreen: React.FC<AddFuelScreenProps> = ({ navigation }) => {
     const [tankowanie, setTankowanie] = useState<Tankowanie>({
@@ -39,6 +89,8 @@ export const AddFuelScreen: React.FC<AddFuelScreenProps> = ({ navigation }) => {
     const [tempPrzebieg, setTempPrzebieg] = useState(tankowanie.przebieg.toString());
     const [tempWaluta, setTempWaluta] = useState(tankowanie.waluta);
     const [tempLitry, setTempLitry] = useState(tankowanie.litry.toString());
+    const [location, setLocation] = useState<Location.LocationObject | null>(null);
+    const [country, setCountry] = useState<string | null>(null);
 
 
     const [open, setOpen] = useState(false);
@@ -109,6 +161,42 @@ export const AddFuelScreen: React.FC<AddFuelScreenProps> = ({ navigation }) => {
         }
     }, [tankowanie.photo]);
 
+
+    useEffect(() => {
+        (async () => {
+            let { status } = await Location.requestForegroundPermissionsAsync();
+            if (status !== 'granted') {
+                Alert.alert('Brak uprawnień do odczytu lokalizacji');
+                return;
+            }
+
+            let location = await Location.getCurrentPositionAsync({});
+            setLocation(location);
+
+            if (location) {
+                let reverseGeocode = await Location.reverseGeocodeAsync(location.coords);
+                console.log(reverseGeocode); // Dodano do debugowania
+                if (reverseGeocode.length > 0 && reverseGeocode[0].country) {
+                    setCountry(reverseGeocode[0].country);
+                } else {
+                    console.log('Nie udało się uzyskać danych kraju.');
+                }
+            }
+
+            if (location) {
+                let reverseGeocode = await Location.reverseGeocodeAsync(location.coords);
+                if (reverseGeocode.length > 0 && reverseGeocode[0].isoCountryCode) {
+                    const isoCountryCode = reverseGeocode[0].isoCountryCode;
+                    setCountry(reverseGeocode[0].country || 'default');
+                    const currency = isoCurrencyMap[isoCountryCode];
+                    if (currency) {
+                        setTankowanie(prevState => ({ ...prevState, waluta: currency }));
+                    }
+                }
+            }
+        })();
+    }, []);
+
     const pickImage = async () => {
         // Prośba o uprawnienia do aparatu i biblioteki zdjęć
         const cameraPermission = await ImagePicker.requestCameraPermissionsAsync();
@@ -143,12 +231,13 @@ export const AddFuelScreen: React.FC<AddFuelScreenProps> = ({ navigation }) => {
             );
         });
 
-        let result: ImagePickerResponse = await ImagePicker.launchCameraAsync({});
+        let result;
+
         if (action === 'capture') {
             // Użytkownik wybrał opcję zrobienia zdjęcia
             result = await ImagePicker.launchCameraAsync({
                 mediaTypes: ImagePicker.MediaTypeOptions.Images,
-                allowsEditing: true,
+                allowsEditing: false,
                 aspect: [4, 3],
                 quality: 1,
             });
@@ -156,14 +245,16 @@ export const AddFuelScreen: React.FC<AddFuelScreenProps> = ({ navigation }) => {
             // Użytkownik wybrał opcję wybrania zdjęcia z galerii
             result = await ImagePicker.launchImageLibraryAsync({
                 mediaTypes: ImagePicker.MediaTypeOptions.Images,
-                allowsEditing: true,
+                allowsEditing: false,
                 aspect: [4, 3],
                 quality: 1,
             });
         }
 
-        if (!result.cancelled) {
-            setTankowanie(prevState => ({ ...prevState, photo: result.uri }));
+        if (result && !result.canceled && result.assets && result.assets.length > 0) {
+            const successResult = result.assets[0].uri;
+            setTankowanie(prevState => ({ ...prevState, photo: successResult }));
+            console.log(successResult); // Powinien pokazać URI zdjęcia
         }
     };
 
@@ -171,6 +262,15 @@ export const AddFuelScreen: React.FC<AddFuelScreenProps> = ({ navigation }) => {
         <ScrollView>
             <Text style={styles.title}>Nowe tankowanie</Text>
             <View style={styles.modalView}>
+
+                <Text style={styles.label}>Współrzędne</Text>
+                <TextInput
+                    style={styles.input}
+                    value={location ? `${location.coords.latitude}, ${location.coords.longitude}` : ''}
+                    placeholder="Współrzędne"
+                    editable={false} // Ustawienie inputa jako nieedytowalnego
+                />
+
                 <Text style={styles.label}>Data</Text>
                 <TextInput
                     style={styles.input}
@@ -182,9 +282,9 @@ export const AddFuelScreen: React.FC<AddFuelScreenProps> = ({ navigation }) => {
                 <Text style={styles.label}>Kraj</Text>
                 <TextInput
                     style={styles.input}
-                    onChangeText={text => setTankowanie({ ...tankowanie, data: text })}
-                    // value={ }
-                    placeholder="Wpisz kraj"
+                    value={country || undefined}
+                    //placeholder="Kraj"
+                    editable={false} // Ustawienie inputa jako nieedytowalnego
                 />
 
                 <Text style={styles.label}>Kwota</Text>
@@ -197,23 +297,14 @@ export const AddFuelScreen: React.FC<AddFuelScreenProps> = ({ navigation }) => {
                 />
 
                 <Text style={styles.label}>Waluta</Text>
-                <View style={styles.pickerContainer}>
-                    <DropDownPicker
-                        style={styles.picker}
-                        open={open}
-                        value={value}
-                        items={items}
-                        setOpen={setOpen}
-                        setValue={setValue}
-                        setItems={setItems}
-                        dropDownContainerStyle={{ width: '80%', marginLeft: "10%", marginRight: "10%" }}
-                        translation={{
-                            PLACEHOLDER: "Wybierz"
-                        }}
-                    />
-                </View>
+                <TextInput
+                    style={styles.input}
+                    value={tankowanie.waluta}
+                    placeholder="Waluta"
+                    editable={false} // Ustawienie inputa jako nieedytowalnego
+                />
 
-                <Text style={styles.label}>Przebieg</Text>
+                <Text style={styles.label}>Stan Licznika</Text>
                 <TextInput
                     style={styles.input}
                     onChangeText={handlePrzebiegChange}
@@ -239,7 +330,7 @@ export const AddFuelScreen: React.FC<AddFuelScreenProps> = ({ navigation }) => {
                     />
                 </View>
 
-                <Text style={styles.label}>Zdjęcie</Text>
+                <Text style={styles.label}>Paragon</Text>
                 {tankowanie.photo && (
                     <View>
                         <Image source={{ uri: tankowanie.photo }} style={{ width: 200, height: 200 }} />
@@ -296,4 +387,3 @@ const styles = StyleSheet.create({
         alignItems: 'center',
     }
 });
-
