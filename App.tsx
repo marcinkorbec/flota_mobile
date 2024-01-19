@@ -4,7 +4,8 @@ import { StyleSheet, Text, View } from 'react-native';
 import { createStackNavigator } from '@react-navigation/stack';
 import SplashScreen from './components/SplashScreen/SplashScreen';
 import LoginScreen from './components/LoginScreen/LoginScreen';
-import HomeScreen from './components/HomeScreen/HomeScreen';
+import { HomeScreen } from './components/HomeScreen/HomeScreen';
+import { RoadFeesScreen } from './components/RoadFeesScreen/RoadFeesScreen';
 import { AddFuelScreen } from './components/AddFuelScreen/AddFuelScreen';
 
 const Stack = createStackNavigator();
@@ -22,7 +23,8 @@ function MyStack() {
             <Stack.Screen name="SplashScreen" component={SplashScreen} options={{ headerShown: false }} />
             <Stack.Screen name="LoginScreen" component={LoginScreen} options={{ headerShown: false }} />
             <Stack.Screen name="HomeScreen" component={HomeScreen} options={{ title: 'Moje tankowania' }} />
-            <Stack.Screen name="AddFuelScreen" component={AddFuelScreen} options={{ title: 'Dodaj tankowanie' }} />
+            <Stack.Screen name="AddFuelScreen" component={AddFuelScreen} options={{ title: 'Nowe tankowanie', headerTitleAlign: 'center' }} />
+            <Stack.Screen name="RoadFeesScreen" component={RoadFeesScreen} options={{ title: 'Koszty drogowe', headerTitleAlign: 'center' }} />
         </Stack.Navigator>
     );
 }

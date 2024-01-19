@@ -1,17 +1,19 @@
 import React, { useState } from 'react';
 import { View, Text, StyleSheet, ScrollView, TouchableOpacity, StatusBar } from 'react-native';
 import { Ionicons } from '@expo/vector-icons';
-import { HomeScreenNavigationProp } from '../../types/navigation-types';
+import { RootStackParamList } from '../../types/navigation-types';
 import { MaterialCommunityIcons } from '@expo/vector-icons';
 // import { changeNavigationBarColor } from 'react-native-navigation-bar-color';
 import { CustomModal } from './CustomModal/CustomModal';
 import { useFocusEffect } from '@react-navigation/native';
+import { DrawerNavigationProp } from '@react-navigation/drawer';
+import { MenuModal } from '../Menu/MenuModal';
 
 
-
-type DrawerParamList = {
-    Home: undefined;
-};
+type HomeScreenNavigationProp = DrawerNavigationProp<
+    RootStackParamList,
+    'HomeScreen'
+>;
 
 interface Tankowanie {
     data: string;
@@ -53,16 +55,16 @@ const mojeTankowania: Tankowanie[] = [
 
 ];
 
-const HomeScreen = ({ navigation }: { navigation: HomeScreenNavigationProp }) => {
+export const HomeScreen = ({ navigation }: { navigation: HomeScreenNavigationProp }) => {
     const [modalVisible, setModalVisible] = useState(false);
-    //const [tankowanie, setTankowanie] = useState<Tankowanie>({ data: '', kwota: 0, waluta: '', przebieg: 0, photo: null });
+    const [menuVisible, setMenuVisible] = useState(false);
 
     React.useLayoutEffect(() => {
         navigation.setOptions({
             headerTitleAlign: 'center',
             headerLeft: () => (
                 <TouchableOpacity
-                    //onPress={() => navigation.toggleDrawer()}
+                    onPress={() => setMenuVisible(true)}
                     style={{ marginLeft: 10, backgroundColor: 'transparent' }}
                 >
                     <Ionicons name="menu" size={30} color="#fff" />
@@ -73,13 +75,8 @@ const HomeScreen = ({ navigation }: { navigation: HomeScreenNavigationProp }) =>
 
     useFocusEffect(
         React.useCallback(() => {
-            // Resetuj stan modalVisible, gdy ekran jest ponownie skupiony
             setModalVisible(false);
-
-            // Opcjonalnie, możesz zwrócić funkcję, która zostanie wywołana przy stracie focusa.
-            return () => {
-                // To jest czynność "cleanup", jeśli jest potrzebna.
-            };
+            setMenuVisible(false);
         }, [])
     );
 
@@ -124,6 +121,7 @@ const HomeScreen = ({ navigation }: { navigation: HomeScreenNavigationProp }) =>
             <TouchableOpacity style={styles.floatingButton} onPress={() => setModalVisible(true)}>
                 <Ionicons name="add" size={30} color="#fff" />
             </TouchableOpacity>
+            <MenuModal menuVisible={menuVisible} setMenuVisible={setMenuVisible} />
             <CustomModal modalVisible={modalVisible} setModalVisible={setModalVisible} />
         </>
     );
@@ -189,4 +187,3 @@ const styles = StyleSheet.create({
     },
 });
 
-export default HomeScreen;

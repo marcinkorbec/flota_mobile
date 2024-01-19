@@ -2,22 +2,14 @@ import React, { useEffect, useState } from 'react';
 import { Modal, View, Text, TextInput, StyleSheet, TouchableOpacity, ScrollView, Alert, Image } from 'react-native';
 import * as ImagePicker from 'expo-image-picker';
 import DropDownPicker from 'react-native-dropdown-picker';
-import { NavigationProp, RouteProp } from '@react-navigation/native';
 import { AddFuelScreenNavigationProp, RootStackParamList } from '../../types/navigation-types';
 import { StackNavigationProp } from '@react-navigation/stack';
 import * as Location from 'expo-location';
-
-type ImageInfo = ImagePicker.ImagePickerResult;
-
 
 
 interface AddFuelScreenProps {
     navigation: StackNavigationProp<RootStackParamList, 'AddFuelScreen'>;
 }
-
-type MyImagePickerResult = ImagePicker.ImagePickerResult & {
-    uri: string;
-};
 
 interface Tankowanie {
     data: string;
@@ -91,15 +83,6 @@ export const AddFuelScreen: React.FC<AddFuelScreenProps> = ({ navigation }) => {
     const [tempLitry, setTempLitry] = useState(tankowanie.litry.toString());
     const [location, setLocation] = useState<Location.LocationObject | null>(null);
     const [country, setCountry] = useState<string | null>(null);
-
-
-    const [open, setOpen] = useState(false);
-    const [value, setValue] = useState(null);
-    const [items, setItems] = useState([
-        { label: 'PLN', value: 'PLN' },
-        { label: 'EUR', value: 'EUR' }
-    ]);
-
     const [payment, setPayment] = useState(false);
     const [valuePayment, setValuePayment] = useState(null);
     const [itemsPayment, setItemsPayment] = useState([
@@ -175,7 +158,7 @@ export const AddFuelScreen: React.FC<AddFuelScreenProps> = ({ navigation }) => {
 
             if (location) {
                 let reverseGeocode = await Location.reverseGeocodeAsync(location.coords);
-                console.log(reverseGeocode); // Dodano do debugowania
+                console.log(reverseGeocode);
                 if (reverseGeocode.length > 0 && reverseGeocode[0].country) {
                     setCountry(reverseGeocode[0].country);
                 } else {
@@ -198,7 +181,7 @@ export const AddFuelScreen: React.FC<AddFuelScreenProps> = ({ navigation }) => {
     }, []);
 
     const pickImage = async () => {
-        // Prośba o uprawnienia do aparatu i biblioteki zdjęć
+        // Request permissions for camera and photo library
         const cameraPermission = await ImagePicker.requestCameraPermissionsAsync();
         const libraryPermission = await ImagePicker.requestMediaLibraryPermissionsAsync();
 
@@ -207,7 +190,7 @@ export const AddFuelScreen: React.FC<AddFuelScreenProps> = ({ navigation }) => {
             return;
         }
 
-        // Opcje dla użytkownika: Zrób zdjęcie lub Wybierz z galerii
+        // Options for user: Take picture or get from gallery
         const action = await new Promise((resolve) => {
             Alert.alert(
                 "Dodaj zdjęcie",
@@ -234,7 +217,7 @@ export const AddFuelScreen: React.FC<AddFuelScreenProps> = ({ navigation }) => {
         let result;
 
         if (action === 'capture') {
-            // Użytkownik wybrał opcję zrobienia zdjęcia
+            // The user selected the option to take a photo            
             result = await ImagePicker.launchCameraAsync({
                 mediaTypes: ImagePicker.MediaTypeOptions.Images,
                 allowsEditing: false,
@@ -242,7 +225,7 @@ export const AddFuelScreen: React.FC<AddFuelScreenProps> = ({ navigation }) => {
                 quality: 1,
             });
         } else if (action === 'library') {
-            // Użytkownik wybrał opcję wybrania zdjęcia z galerii
+            // The user chose the option to select a photo from the gallery
             result = await ImagePicker.launchImageLibraryAsync({
                 mediaTypes: ImagePicker.MediaTypeOptions.Images,
                 allowsEditing: false,
@@ -254,13 +237,12 @@ export const AddFuelScreen: React.FC<AddFuelScreenProps> = ({ navigation }) => {
         if (result && !result.canceled && result.assets && result.assets.length > 0) {
             const successResult = result.assets[0].uri;
             setTankowanie(prevState => ({ ...prevState, photo: successResult }));
-            console.log(successResult); // Powinien pokazać URI zdjęcia
+            console.log(successResult);
         }
     };
 
     return (
         <ScrollView>
-            <Text style={styles.title}>Nowe tankowanie</Text>
             <View style={styles.modalView}>
 
                 <Text style={styles.label}>Współrzędne</Text>
@@ -268,7 +250,7 @@ export const AddFuelScreen: React.FC<AddFuelScreenProps> = ({ navigation }) => {
                     style={styles.input}
                     value={location ? `${location.coords.latitude}, ${location.coords.longitude}` : ''}
                     placeholder="Współrzędne"
-                    editable={false} // Ustawienie inputa jako nieedytowalnego
+                    editable={false}
                 />
 
                 <Text style={styles.label}>Data</Text>
@@ -283,8 +265,8 @@ export const AddFuelScreen: React.FC<AddFuelScreenProps> = ({ navigation }) => {
                 <TextInput
                     style={styles.input}
                     value={country || undefined}
-                    //placeholder="Kraj"
-                    editable={false} // Ustawienie inputa jako nieedytowalnego
+                    placeholder="Kraj"
+                    editable={false}
                 />
 
                 <Text style={styles.label}>Kwota</Text>
@@ -301,7 +283,7 @@ export const AddFuelScreen: React.FC<AddFuelScreenProps> = ({ navigation }) => {
                     style={styles.input}
                     value={tankowanie.waluta}
                     placeholder="Waluta"
-                    editable={false} // Ustawienie inputa jako nieedytowalnego
+                    editable={false}
                 />
 
                 <Text style={styles.label}>Stan Licznika</Text>
@@ -340,7 +322,7 @@ export const AddFuelScreen: React.FC<AddFuelScreenProps> = ({ navigation }) => {
                     <Text style={styles.buttonText}>Dodaj zdjecie</Text>
                 </TouchableOpacity>
                 <TouchableOpacity style={styles.button} onPress={saveData}>
-                    <Text style={styles.buttonText}>Zapisz dane</Text>
+                    <Text style={styles.buttonText}>Wyślij dane</Text>
                 </TouchableOpacity>
             </View>
         </ScrollView>
