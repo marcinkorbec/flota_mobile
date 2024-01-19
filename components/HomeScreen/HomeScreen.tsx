@@ -5,6 +5,8 @@ import { HomeScreenNavigationProp } from '../../types/navigation-types';
 import { MaterialCommunityIcons } from '@expo/vector-icons';
 // import { changeNavigationBarColor } from 'react-native-navigation-bar-color';
 import { CustomModal } from './CustomModal/CustomModal';
+import { useFocusEffect } from '@react-navigation/native';
+
 
 
 type DrawerParamList = {
@@ -69,6 +71,18 @@ const HomeScreen = ({ navigation }: { navigation: HomeScreenNavigationProp }) =>
         });
     }, [navigation]);
 
+    useFocusEffect(
+        React.useCallback(() => {
+            // Resetuj stan modalVisible, gdy ekran jest ponownie skupiony
+            setModalVisible(false);
+
+            // Opcjonalnie, możesz zwrócić funkcję, która zostanie wywołana przy stracie focusa.
+            return () => {
+                // To jest czynność "cleanup", jeśli jest potrzebna.
+            };
+        }, [])
+    );
+
     //@TODO - zmienić kolor paska nawigacji
     // React.useEffect(() => {
     //     changeNavigationBarColor('#E8364F', true); // drugi argument określa, czy pasek nawigacji powinien być jasny czy ciemny
@@ -110,9 +124,7 @@ const HomeScreen = ({ navigation }: { navigation: HomeScreenNavigationProp }) =>
             <TouchableOpacity style={styles.floatingButton} onPress={() => setModalVisible(true)}>
                 <Ionicons name="add" size={30} color="#fff" />
             </TouchableOpacity>
-            <CustomModal
-
-            />
+            <CustomModal modalVisible={modalVisible} setModalVisible={setModalVisible} />
         </>
     );
 };
