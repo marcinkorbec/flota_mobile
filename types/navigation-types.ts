@@ -6,9 +6,11 @@ export type RootStackParamList = {
     LoginScreen: undefined;
     HomeScreen: undefined;
     AddFuelScreen: undefined;
+    RoadFeesScreen: undefined;
 };
 
 export type SplashScreenNavigationProp = StackNavigationProp<RootStackParamList, 'LoginScreen'>;
 export type LoginScreenNavigationProp = StackNavigationProp<RootStackParamList, 'HomeScreen'>;
 export type HomeScreenNavigationProp = StackNavigationProp<RootStackParamList, 'HomeScreen'>;
 export type AddFuelScreenNavigationProp = StackNavigationProp<RootStackParamList, 'AddFuelScreen'>;
+export type RoadFeesScreenNavigationProp = StackNavigationProp<RootStackParamList, 'RoadFeesScreen'>;
