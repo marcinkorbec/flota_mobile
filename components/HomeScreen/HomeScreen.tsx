@@ -24,9 +24,9 @@ interface Tankowanie {
     litry: number;
 }
 
-interface HomeScreenProps {
-    navigation: HomeScreenNavigationProp;
-}
+// interface HomeScreenProps {
+//     navigation: HomeScreenNavigationProp;
+// }
 
 const mojeTankowania: Tankowanie[] = [
     { data: '2023-04-01', kwota: 250.00, waluta: 'PLN', przebieg: 15000, photo: null, litry: 90 },
