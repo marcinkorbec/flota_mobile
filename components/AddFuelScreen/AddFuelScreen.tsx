@@ -85,6 +85,7 @@ export const AddFuelScreen: React.FC<AddFuelScreenProps> = ({ navigation }) => {
     const [country, setCountry] = useState<string | null>(null);
     const [payment, setPayment] = useState(false);
     const [valuePayment, setValuePayment] = useState(null);
+    const [paymentType, setPaymentType] = useState('');
     const [itemsPayment, setItemsPayment] = useState([
         { label: 'Gotówka', value: 'Gotówka' },
         { label: 'Karta', value: 'Karta' },
@@ -98,7 +99,7 @@ export const AddFuelScreen: React.FC<AddFuelScreenProps> = ({ navigation }) => {
         { label: 'Nie', value: false },
     ]);
     const [openFullTank, setOpenFullTank] = useState(false);
-    const [valueFullTank, setValueFullTank] = useState(null);
+    const [isFullTank, setIsFullTank] = useState('');
 
     const handlePrzebiegChange = (text: string) => {
         const cleanedText = text.replace(/[^0-9]/g, '');
@@ -149,9 +150,12 @@ export const AddFuelScreen: React.FC<AddFuelScreenProps> = ({ navigation }) => {
 
     useEffect(() => {
         setTempData(tankowanie.data);
-        setTempKwota(tankowanie.kwota.toString());
-        setTempPrzebieg(tankowanie.przebieg.toString());
+        //setTempKwota(tankowanie.kwota.toString());
+        //setTempPrzebieg(tankowanie.przebieg.toString());
         setTempWaluta(tankowanie.waluta);
+        setTempKwota(tankowanie.kwota > 0 ? tankowanie.kwota.toString() : '');
+        setTempPrzebieg(tankowanie.przebieg > 0 ? tankowanie.przebieg.toString() : '');
+        setTempLitry(tankowanie.litry > 0 ? tankowanie.litry.toString() : '');
     }, [tankowanie]);
 
     useEffect(() => {
@@ -326,7 +330,7 @@ export const AddFuelScreen: React.FC<AddFuelScreenProps> = ({ navigation }) => {
                     keyboardType="numeric"
                 />
 
-                <Text style={styles.label}>Karta/Gotówka</Text>
+                {/* <Text style={styles.label}>Karta/Gotówka</Text>
                 <View style={styles.pickerContainer}>
                     <DropDownPicker
                         style={styles.picker}
@@ -358,7 +362,23 @@ export const AddFuelScreen: React.FC<AddFuelScreenProps> = ({ navigation }) => {
                             PLACEHOLDER: "Wybierz"
                         }}
                     />
-                </View>
+                </View> */}
+
+                <Text style={styles.label}>Karta/Gotówka</Text>
+                <TextInput
+                    style={styles.input}
+                    onChangeText={setPaymentType}
+                    value={paymentType}
+                    placeholder="Karta/Gotówka"
+                />
+
+                <Text style={styles.label}>Tankowanie do pełna</Text>
+                <TextInput
+                    style={styles.input}
+                    onChangeText={setIsFullTank}
+                    value={isFullTank}
+                    placeholder="Tak/Nie"
+                />
 
                 <Text style={styles.label}>Paragon</Text>
                 {tankowanie.photo && (
