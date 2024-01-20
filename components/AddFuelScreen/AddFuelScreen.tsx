@@ -92,6 +92,14 @@ export const AddFuelScreen: React.FC<AddFuelScreenProps> = ({ navigation }) => {
         { label: 'ORLEN', value: 'ORLEN' },
     ]);
 
+    const [fullTank, setFullTank] = useState(false);
+    const [itemsFullTank, setItemsFullTank] = useState([
+        { label: 'Tak', value: true },
+        { label: 'Nie', value: false },
+    ]);
+    const [openFullTank, setOpenFullTank] = useState(false);
+    const [valueFullTank, setValueFullTank] = useState(null);
+
     const handlePrzebiegChange = (text: string) => {
         const cleanedText = text.replace(/[^0-9]/g, '');
         const przebieg = cleanedText === '' ? '' : parseInt(cleanedText, 10).toString();
@@ -113,14 +121,22 @@ export const AddFuelScreen: React.FC<AddFuelScreenProps> = ({ navigation }) => {
     }, [tankowanie]);
 
     const saveData = () => {
-        setTankowanie({
+        if (!tempData || !tempKwota || !tempPrzebieg || !tempWaluta || !tempLitry || valuePayment === null || valueFullTank === null) {
+            Alert.alert('Wszystkie pola są wymagane');
+            return;
+        }
+
+        const newTankowanie = {
             ...tankowanie,
             data: tempData,
             kwota: parseFloat(tempKwota),
             przebieg: parseInt(tempPrzebieg, 10),
             waluta: tempWaluta,
             litry: parseInt(tempLitry, 10),
-        });
+        };
+
+        setTankowanie(newTankowanie);
+        console.log(newTankowanie);
     };
 
     useEffect(() => {
@@ -245,9 +261,9 @@ export const AddFuelScreen: React.FC<AddFuelScreenProps> = ({ navigation }) => {
         <ScrollView>
             <View style={styles.modalView}>
 
-                <Text style={styles.label}>Współrzędne</Text>
+                {/* <Text style={styles.label}>Współrzędne</Text> */}
                 <TextInput
-                    style={styles.input}
+                    style={{ ...styles.input, display: 'none' }}
                     value={location ? `${location.coords.latitude}, ${location.coords.longitude}` : ''}
                     placeholder="Współrzędne"
                     editable={false}
@@ -272,9 +288,24 @@ export const AddFuelScreen: React.FC<AddFuelScreenProps> = ({ navigation }) => {
                 <Text style={styles.label}>Kwota</Text>
                 <TextInput
                     style={styles.input}
-                    onChangeText={handleKwotaChange}
+                    onChangeText={text => {
+                        const kwota = text.replace(/[^0-9.]/g, '').replace(/(\.\d{2})\d+/, '$1');
+                        handleKwotaChange(kwota);
+                    }}
                     value={tempKwota}
                     placeholder="Kwota"
+                    keyboardType="numeric"
+                />
+
+                <Text style={styles.label}>Ilość litrów</Text>
+                <TextInput
+                    style={styles.input}
+                    onChangeText={text => {
+                        const litry = text.replace(/[^0-9.]/g, '').replace(/(\.\d{2})\d+/, '$1');
+                        setTempLitry(litry);
+                    }}
+                    value={tempLitry}
+                    placeholder="Ilość litrów"
                     keyboardType="numeric"
                 />
 
@@ -312,6 +343,23 @@ export const AddFuelScreen: React.FC<AddFuelScreenProps> = ({ navigation }) => {
                     />
                 </View>
 
+                <Text style={styles.label}>Tankowanie do pełna</Text>
+                <View style={styles.pickerContainer}>
+                    <DropDownPicker
+                        style={styles.picker}
+                        open={openFullTank}
+                        value={valueFullTank}
+                        items={itemsFullTank}
+                        setOpen={setOpenFullTank}
+                        setValue={setValueFullTank}
+                        setItems={setItemsFullTank}
+                        dropDownContainerStyle={{ width: '80%', marginLeft: "10%", marginRight: "10%" }}
+                        translation={{
+                            PLACEHOLDER: "Wybierz"
+                        }}
+                    />
+                </View>
+
                 <Text style={styles.label}>Paragon</Text>
                 {tankowanie.photo && (
                     <View>
@@ -329,9 +377,10 @@ export const AddFuelScreen: React.FC<AddFuelScreenProps> = ({ navigation }) => {
     );
 };
 
+
 const styles = StyleSheet.create({
     modalView: { flex: 1, justifyContent: 'center', alignItems: 'center' },
-    input: { height: 50, borderColor: 'gray', borderWidth: 1, width: '80%', marginBottom: 0, paddingLeft: 10 },
+    input: { height: 50, borderColor: '#ddd', borderWidth: 1, width: '80%', marginBottom: 0, paddingLeft: 10, backgroundColor: 'white' },
     title: {
         fontSize: 20,
         fontWeight: 'bold',
@@ -343,7 +392,7 @@ const styles = StyleSheet.create({
         marginRight: 36,
         width: '80%',
         borderWidth: 1,
-        borderColor: 'grey',
+        borderColor: '#ddd',
         color: 'black',
         borderRadius: 0,
     },
