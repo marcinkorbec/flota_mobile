@@ -323,7 +323,7 @@ export const AddFuelScreen: React.FC<AddFuelScreenProps> = ({ navigation }) => {
                     style={styles.input}
                     onChangeText={handleKwotaChange}
                     value={tankowanie.kwota !== null && tankowanie.kwota !== 0 ? tankowanie.kwota.toString() : ''}
-                    placeholder="Kwota"
+                    placeholder="Wpisz kwote"
                     keyboardType="numeric"
                 />
 
@@ -333,7 +333,7 @@ export const AddFuelScreen: React.FC<AddFuelScreenProps> = ({ navigation }) => {
                     style={styles.input}
                     onChangeText={handleLitryChange}
                     value={tankowanie.litry !== null && tankowanie.litry !== 0 ? tankowanie.litry.toString() : ''}
-                    placeholder="Ilość litrów"
+                    placeholder="Wpisz ilość litrów"
                     keyboardType="numeric"
                 />
 
@@ -351,7 +351,7 @@ export const AddFuelScreen: React.FC<AddFuelScreenProps> = ({ navigation }) => {
                     style={styles.input}
                     onChangeText={handlePrzebiegChange}
                     value={tankowanie.przebieg !== null && tankowanie.przebieg !== 0 ? tankowanie.przebieg.toString() : ''}
-                    placeholder="Przebieg"
+                    placeholder="Wpisz przebieg"
                     keyboardType="numeric"
                 />
 
@@ -395,7 +395,7 @@ export const AddFuelScreen: React.FC<AddFuelScreenProps> = ({ navigation }) => {
                     style={styles.input}
                     onChangeText={handlePaymentTypeChange}
                     value={paymentType}
-                    placeholder="Karta/Gotówka"
+                    placeholder="Karta/Gotówka/DKV"
                 />
 
                 <Text style={styles.label}>Tankowanie do pełna</Text>
