@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import { Modal, View, Text, TextInput, StyleSheet, TouchableOpacity, ScrollView, Alert, Image } from 'react-native';
 import * as ImagePicker from 'expo-image-picker';
-import DropDownPicker from 'react-native-dropdown-picker';
+//import DropDownPicker from 'react-native-dropdown-picker';
 import { AddFuelScreenNavigationProp, RootStackParamList } from '../../types/navigation-types';
 import { StackNavigationProp } from '@react-navigation/stack';
 import * as Location from 'expo-location';
@@ -83,34 +83,65 @@ export const AddFuelScreen: React.FC<AddFuelScreenProps> = ({ navigation }) => {
     const [tempLitry, setTempLitry] = useState(tankowanie.litry.toString());
     const [location, setLocation] = useState<Location.LocationObject | null>(null);
     const [country, setCountry] = useState<string | null>(null);
-    const [payment, setPayment] = useState(false);
+    //const [payment, setPayment] = useState(false);
     const [valuePayment, setValuePayment] = useState(null);
     const [paymentType, setPaymentType] = useState('');
-    const [itemsPayment, setItemsPayment] = useState([
-        { label: 'Gotówka', value: 'Gotówka' },
-        { label: 'Karta', value: 'Karta' },
-        { label: 'DKV', value: 'DKV' },
-        { label: 'ORLEN', value: 'ORLEN' },
-    ]);
+    // const [itemsPayment, setItemsPayment] = useState([
+    //     { label: 'Gotówka', value: 'Gotówka' },
+    //     { label: 'Karta', value: 'Karta' },
+    //     { label: 'DKV', value: 'DKV' },
+    //     { label: 'ORLEN', value: 'ORLEN' },
+    // ]);
 
-    const [fullTank, setFullTank] = useState(false);
-    const [itemsFullTank, setItemsFullTank] = useState([
-        { label: 'Tak', value: true },
-        { label: 'Nie', value: false },
-    ]);
-    const [openFullTank, setOpenFullTank] = useState(false);
+    // const [fullTank, setFullTank] = useState(false);
+    // const [itemsFullTank, setItemsFullTank] = useState([
+    //     { label: 'Tak', value: true },
+    //     { label: 'Nie', value: false },
+    // ]);
+    // const [openFullTank, setOpenFullTank] = useState(false);
     const [isFullTank, setIsFullTank] = useState('');
 
-    const handlePrzebiegChange = (text: string) => {
-        const cleanedText = text.replace(/[^0-9]/g, '');
-        const przebieg = cleanedText === '' ? '' : parseInt(cleanedText, 10).toString();
-        setTempPrzebieg(przebieg);
+    // const handlePrzebiegChange = (text: string) => {
+    //     const cleanedText = text.replace(/[^0-9]/g, '');
+    //     const przebieg = cleanedText === '' ? '' : parseInt(cleanedText, 10).toString();
+    //     setTempPrzebieg(przebieg);
+    // };
+
+
+    // const handleKwotaChange = (text: string) => {
+    //     const kwota = text.trim() === '' ? '' : parseFloat(text).toString();
+    //     setTempKwota(kwota);
+    // };
+
+    const handlePaymentTypeChange = (text: string) => {
+        const validValues = ['Karta', 'Gotówka', 'DKV', 'Dkv'];
+        if (validValues.includes(text)) {
+            setPaymentType(text);
+        } else {
+            Alert.alert('Wpisz Karta, Gotówka, Dkv')
+        }
     };
 
+    const handleFullTankChange = (text: string) => {
+        const validValues = ['Tak', 'Nie'];
+        if (validValues.includes(text)) {
+            setIsFullTank(text);
+        }
+    };
 
     const handleKwotaChange = (text: string) => {
-        const kwota = text.trim() === '' ? '' : parseFloat(text).toString();
-        setTempKwota(kwota);
+        const kwota = text.replace(/[^0-9.]/g, '').replace(/(\.\d{2})\d+/, '$1');
+        setTankowanie(prevState => ({ ...prevState, kwota: kwota !== '' ? parseFloat(kwota) : 0 }));
+    };
+
+    const handleLitryChange = (text: string) => {
+        const litry = text.replace(/[^0-9.]/g, '').replace(/(\.\d{2})\d+/, '$1');
+        setTankowanie(prevState => ({ ...prevState, litry: litry !== '' ? parseFloat(litry) : 0 }));
+    };
+
+    const handlePrzebiegChange = (text: string) => {
+        const przebieg = text.replace(/[^0-9]/g, '');
+        setTankowanie(prevState => ({ ...prevState, przebieg: przebieg !== '' ? parseInt(przebieg, 10) : 0 }));
     };
 
     useEffect(() => {
@@ -150,8 +181,6 @@ export const AddFuelScreen: React.FC<AddFuelScreenProps> = ({ navigation }) => {
 
     useEffect(() => {
         setTempData(tankowanie.data);
-        //setTempKwota(tankowanie.kwota.toString());
-        //setTempPrzebieg(tankowanie.przebieg.toString());
         setTempWaluta(tankowanie.waluta);
         setTempKwota(tankowanie.kwota > 0 ? tankowanie.kwota.toString() : '');
         setTempPrzebieg(tankowanie.przebieg > 0 ? tankowanie.przebieg.toString() : '');
@@ -292,26 +321,22 @@ export const AddFuelScreen: React.FC<AddFuelScreenProps> = ({ navigation }) => {
                 <Text style={styles.label}>Kwota</Text>
                 <TextInput
                     style={styles.input}
-                    onChangeText={text => {
-                        const kwota = text.replace(/[^0-9.]/g, '').replace(/(\.\d{2})\d+/, '$1');
-                        handleKwotaChange(kwota);
-                    }}
-                    value={tempKwota}
+                    onChangeText={handleKwotaChange}
+                    value={tankowanie.kwota !== null && tankowanie.kwota !== 0 ? tankowanie.kwota.toString() : ''}
                     placeholder="Kwota"
                     keyboardType="numeric"
                 />
 
+
                 <Text style={styles.label}>Ilość litrów</Text>
                 <TextInput
                     style={styles.input}
-                    onChangeText={text => {
-                        const litry = text.replace(/[^0-9.]/g, '').replace(/(\.\d{2})\d+/, '$1');
-                        setTempLitry(litry);
-                    }}
-                    value={tempLitry}
+                    onChangeText={handleLitryChange}
+                    value={tankowanie.litry !== null && tankowanie.litry !== 0 ? tankowanie.litry.toString() : ''}
                     placeholder="Ilość litrów"
                     keyboardType="numeric"
                 />
+
 
                 <Text style={styles.label}>Waluta</Text>
                 <TextInput
@@ -325,10 +350,11 @@ export const AddFuelScreen: React.FC<AddFuelScreenProps> = ({ navigation }) => {
                 <TextInput
                     style={styles.input}
                     onChangeText={handlePrzebiegChange}
-                    value={tempPrzebieg}
+                    value={tankowanie.przebieg !== null && tankowanie.przebieg !== 0 ? tankowanie.przebieg.toString() : ''}
                     placeholder="Przebieg"
                     keyboardType="numeric"
                 />
+
 
                 {/* <Text style={styles.label}>Karta/Gotówka</Text>
                 <View style={styles.pickerContainer}>
@@ -367,7 +393,7 @@ export const AddFuelScreen: React.FC<AddFuelScreenProps> = ({ navigation }) => {
                 <Text style={styles.label}>Karta/Gotówka</Text>
                 <TextInput
                     style={styles.input}
-                    onChangeText={setPaymentType}
+                    onChangeText={handlePaymentTypeChange}
                     value={paymentType}
                     placeholder="Karta/Gotówka"
                 />
@@ -375,7 +401,7 @@ export const AddFuelScreen: React.FC<AddFuelScreenProps> = ({ navigation }) => {
                 <Text style={styles.label}>Tankowanie do pełna</Text>
                 <TextInput
                     style={styles.input}
-                    onChangeText={setIsFullTank}
+                    onChangeText={handleFullTankChange}
                     value={isFullTank}
                     placeholder="Tak/Nie"
                 />
