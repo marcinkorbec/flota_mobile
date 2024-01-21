@@ -59,6 +59,11 @@ export const HomeScreen = ({ navigation }: { navigation: HomeScreenNavigationPro
     const [modalVisible, setModalVisible] = useState(false);
     const [menuVisible, setMenuVisible] = useState(false);
 
+    // Ten kod jest wywoływany podczas montowania i aktualizacji komponentu.
+    // Ustawia opcje dla nagłówka nawigacji.
+    // Dodaje przycisk menu w lewym rogu nagłówka, który otwiera menu po naciśnięciu.
+    // ANCHOR Ten kod używa hooka useLayoutEffect z Reacta, który pozwala na manipulację opcjami nawigacji.
+
     React.useLayoutEffect(() => {
         navigation.setOptions({
             headerTitleAlign: 'center',
