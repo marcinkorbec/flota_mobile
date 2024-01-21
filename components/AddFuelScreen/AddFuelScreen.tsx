@@ -134,11 +134,18 @@ export const AddFuelScreen: React.FC<AddFuelScreenProps> = ({ navigation }) => {
         setTankowanie(prevState => ({ ...prevState, kwota: kwota !== '' ? parseFloat(kwota) : 0 }));
     };
 
+    // Ta funkcja obsługuje zmiany w polu "Litry". 
+    // Usuwa wszystkie znaki, które nie są cyframi lub kropką z wprowadzonego tekstu.
+    // Następnie zaokrągla wartość do dwóch miejsc po przecinku.
+    // Na koniec aktualizuje stan "tankowanie" z nową wartością "litry".
     const handleLitryChange = (text: string) => {
         const litry = text.replace(/[^0-9.]/g, '').replace(/(\.\d{2})\d+/, '$1');
         setTankowanie(prevState => ({ ...prevState, litry: litry !== '' ? parseFloat(litry) : 0 }));
     };
 
+    // Ta funkcja obsługuje zmiany w polu "Przebieg". 
+    // Usuwa wszystkie znaki, które nie są cyframi z wprowadzonego tekstu.
+    // Następnie aktualizuje stan "tankowanie" z nową wartością "przebieg".
     const handlePrzebiegChange = (text: string) => {
         const przebieg = text.replace(/[^0-9]/g, '');
         setTankowanie(prevState => ({ ...prevState, przebieg: przebieg !== '' ? parseInt(przebieg, 10) : 0 }));
@@ -202,25 +209,40 @@ export const AddFuelScreen: React.FC<AddFuelScreenProps> = ({ navigation }) => {
                 return;
             }
 
+            // Pobieranie aktualnej pozycji użytkownika
             let location = await Location.getCurrentPositionAsync({});
+            // Zapisywanie pozycji użytkownika
             setLocation(location);
 
+            // Jeżeli udało się pobrać lokalizację
             if (location) {
+                // Próba odwrócenia geokodowania, aby uzyskać informacje o lokalizacji na podstawie współrzędnych
                 let reverseGeocode = await Location.reverseGeocodeAsync(location.coords);
+                // Logowanie wyników odwróconego geokodowania
                 console.log(reverseGeocode);
+                // Jeżeli udało się uzyskać informacje o kraju
                 if (reverseGeocode.length > 0 && reverseGeocode[0].country) {
+                    // Zapisywanie nazwy kraju
                     setCountry(reverseGeocode[0].country);
                 } else {
+                    // Logowanie błędu, jeżeli nie udało się uzyskać informacji o kraju
                     console.log('Nie udało się uzyskać danych kraju.');
                 }
             }
 
             if (location) {
+                // Wywołanie funkcji reverseGeocodeAsync z biblioteki Location, aby uzyskać informacje o lokalizacji na podstawie współrzędnych
                 let reverseGeocode = await Location.reverseGeocodeAsync(location.coords);
+                // Sprawdzenie, czy otrzymano jakiekolwiek dane i czy istnieje kod kraju ISO
+                // Sprawdzenie, czy otrzymano jakiekolwiek dane i czy istnieje kod kraju ISO
                 if (reverseGeocode.length > 0 && reverseGeocode[0].isoCountryCode) {
+                    // Pobranie kodu kraju ISO
                     const isoCountryCode = reverseGeocode[0].isoCountryCode;
+                    // Ustawienie nazwy kraju lub 'default', jeśli nazwa kraju nie jest dostępna
                     setCountry(reverseGeocode[0].country || 'default');
+                    // Pobranie waluty na podstawie kodu kraju ISO
                     const currency = isoCurrencyMap[isoCountryCode];
+                    // Jeśli waluta jest dostępna, ustawienie jej jako waluty tankowania
                     if (currency) {
                         setTankowanie(prevState => ({ ...prevState, waluta: currency }));
                     }
