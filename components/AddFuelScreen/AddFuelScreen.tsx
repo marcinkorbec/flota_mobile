@@ -113,6 +113,10 @@ export const AddFuelScreen: React.FC<AddFuelScreenProps> = ({ navigation }) => {
     //     setTempKwota(kwota);
     // };
 
+    // Ta funkcja obsługuje zmiany w polu "Typ płatności". 
+    // Sprawdza, czy wprowadzony tekst jest jednym z dozwolonych wartości: 'Karta', 'Gotówka', 'DKV', 'Dkv'.
+    // Jeśli tak, aktualizuje stan "paymentType" z nową wartością.
+    // W przeciwnym razie wyświetla alert z prośbą o wprowadzenie jednej z dozwolonych wartości.
     const handlePaymentTypeChange = (text: string) => {
         const validValues = ['Karta', 'Gotówka', 'DKV', 'Dkv'];
         if (validValues.includes(text)) {
@@ -122,6 +126,9 @@ export const AddFuelScreen: React.FC<AddFuelScreenProps> = ({ navigation }) => {
         }
     };
 
+    // Ta funkcja obsługuje zmiany w polu "Czy zatankowano do pełna". 
+    // Sprawdza, czy wprowadzony tekst jest jednym z dozwolonych wartości: 'Tak' lub 'Nie'.
+    // Jeśli tak, aktualizuje stan "isFullTank" z nową wartością.
     const handleFullTankChange = (text: string) => {
         const validValues = ['Tak', 'Nie'];
         if (validValues.includes(text)) {
@@ -151,20 +158,16 @@ export const AddFuelScreen: React.FC<AddFuelScreenProps> = ({ navigation }) => {
         setTankowanie(prevState => ({ ...prevState, przebieg: przebieg !== '' ? parseInt(przebieg, 10) : 0 }));
     };
 
-    useEffect(() => {
-        setTempData(tankowanie.data);
-        setTempKwota(tankowanie.kwota.toString());
-        setTempPrzebieg(tankowanie.przebieg.toString());
-        setTempWaluta(tankowanie.waluta);
-        setTempLitry(tankowanie.litry.toString());
-    }, [tankowanie]);
-
+    // Ta funkcja zapisuje dane wprowadzone przez użytkownika.
     const saveData = () => {
+        // Sprawdza, czy wszystkie pola zostały wypełnione.
+        // Jeśli jakiekolwiek pole jest puste, wyświetla alert i zwraca funkcję.
         if (!tempData || !tempKwota || !tempPrzebieg || !tempWaluta || !tempLitry || valuePayment === null || valueFullTank === null) {
             Alert.alert('Wszystkie pola są wymagane');
             return;
         }
 
+        // Tworzy nowy obiekt "tankowanie" z aktualnymi danymi wprowadzonymi przez użytkownika.
         const newTankowanie = {
             ...tankowanie,
             data: tempData,
@@ -174,7 +177,9 @@ export const AddFuelScreen: React.FC<AddFuelScreenProps> = ({ navigation }) => {
             litry: parseInt(tempLitry, 10),
         };
 
+        // Aktualizuje stan "tankowanie" nowym obiektem.
         setTankowanie(newTankowanie);
+        // Loguje nowy obiekt "tankowanie" do konsoli.
         console.log(newTankowanie);
     };
 
