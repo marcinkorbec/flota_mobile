@@ -191,11 +191,11 @@ export const AddFuelScreen: React.FC<AddFuelScreenProps> = ({ navigation }) => {
     }, [tankowanie, setTankowanie]);
 
 
-// Ten kod jest hookiem efektu (useEffect) w React, który jest wywoływany, gdy obiekt tankowanie ulega zmianie.
+    // Ten kod jest hookiem efektu (useEffect) w React, który jest wywoływany, gdy obiekt tankowanie ulega zmianie.
 
-// Wewnątrz hooku useEffect, aktualizuje on stan tymczasowych wartości (tempData, tempWaluta, tempKwota, tempPrzebieg, tempLitry) na podstawie aktualnych wartości w obiekcie tankowanie.
+    // Wewnątrz hooku useEffect, aktualizuje on stan tymczasowych wartości (tempData, tempWaluta, tempKwota, tempPrzebieg, tempLitry) na podstawie aktualnych wartości w obiekcie tankowanie.
 
-// Jeśli wartość kwota, przebieg lub litry jest większa od 0, jest ona konwertowana na string i zapisywana jako odpowiednia wartość tymczasowa. Jeśli nie, jako wartość tymczasową ustawiany jest pusty string.
+    // Jeśli wartość kwota, przebieg lub litry jest większa od 0, jest ona konwertowana na string i zapisywana jako odpowiednia wartość tymczasowa. Jeśli nie, jako wartość tymczasową ustawiany jest pusty string.
     useEffect(() => {
         setTempData(tankowanie.data);
         setTempWaluta(tankowanie.waluta);
@@ -243,7 +243,6 @@ export const AddFuelScreen: React.FC<AddFuelScreenProps> = ({ navigation }) => {
             if (location) {
                 // Wywołanie funkcji reverseGeocodeAsync z biblioteki Location, aby uzyskać informacje o lokalizacji na podstawie współrzędnych
                 let reverseGeocode = await Location.reverseGeocodeAsync(location.coords);
-                // Sprawdzenie, czy otrzymano jakiekolwiek dane i czy istnieje kod kraju ISO
                 // Sprawdzenie, czy otrzymano jakiekolwiek dane i czy istnieje kod kraju ISO
                 if (reverseGeocode.length > 0 && reverseGeocode[0].isoCountryCode) {
                     // Pobranie kodu kraju ISO
