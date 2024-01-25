@@ -197,12 +197,16 @@ export const AddFuelScreen: React.FC<AddFuelScreenProps> = ({ navigation }) => {
 
     // Jeśli wartość kwota, przebieg lub litry jest większa od 0, jest ona konwertowana na string i zapisywana jako odpowiednia wartość tymczasowa. Jeśli nie, jako wartość tymczasową ustawiany jest pusty string.
     useEffect(() => {
-        setTempData(tankowanie.data);
-        setTempWaluta(tankowanie.waluta);
+        setTempData(tankowanie.data); // Ustawia wartość tempData na podstawie wartości tankowanie.data
+        setTempWaluta(tankowanie.waluta); // Ustawia wartość tempWaluta na podstawie wartości tankowanie.waluta
+        // Sprawdza, czy wartość tankowanie.kwota jest większa niż 0, jeśli tak, konwertuje ją na ciąg znaków (string) i ustawia dla tempKwota, w przeciwnym razie ustawia pusty ciąg znaków
         setTempKwota(tankowanie.kwota > 0 ? tankowanie.kwota.toString() : '');
+        // Podobnie jak wyżej, dla wartości tankowanie.przebieg - konwertuje na string jeśli większa niż 0, w przeciwnym razie pusty ciąg
         setTempPrzebieg(tankowanie.przebieg > 0 ? tankowanie.przebieg.toString() : '');
+        // Podobnie jak wyżej, dla wartości tankowanie.litry - konwertuje na string jeśli większa niż 0, w przeciwnym razie pusty ciąg
         setTempLitry(tankowanie.litry > 0 ? tankowanie.litry.toString() : '');
-    }, [tankowanie]);
+    }, [tankowanie]); // Hook useEffect jest wywoływany ponownie, gdy obiekt tankowanie ulegnie zmianie
+    
 
     useEffect(() => {
         if (tankowanie.photo) {
