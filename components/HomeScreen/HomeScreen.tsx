@@ -72,7 +72,7 @@ export const HomeScreen = ({ navigation }: { navigation: HomeScreenNavigationPro
                     onPress={() => setMenuVisible(true)} // Ustawia widoczność menu na true po naciśnięciu przycisku
                     style={{ marginLeft: 10, backgroundColor: 'transparent' }} // Ustawia styl przycisku menu
                 >
-                    <Ionicons name="menu" size={30} color="#fff" /> // Wyświetla ikonę menu
+                    <Ionicons name="menu" size={30} color="#fff" />
                 </TouchableOpacity>
             ),
         });
@@ -93,32 +93,32 @@ export const HomeScreen = ({ navigation }: { navigation: HomeScreenNavigationPro
     return (
         <>
             <StatusBar barStyle="light-content" backgroundColor="#E8364F" />
-            <ScrollView style={styles.container}> // Tworzy ScrollView z ustawionym stylem 'container'
-                <View style={styles.consumptionContainer}> // Tworzy View z ustawionym stylem 'consumptionContainer'
-                    <View style={styles.consumptionBox}> // Tworzy View z ustawionym stylem 'consumptionBox'
-                        <MaterialCommunityIcons name="fuel" size={24} color="#E8364F" /> // Wyświetla ikonę paliwa
-                        <Text style={styles.consumptionValue}>8,9 l/100km</Text> // Wyświetla wartość średniego spalania
-                        <Text style={styles.consumptionText}>Średnie spalanie</Text> // Wyświetla tekst "Średnie spalanie"
+            <ScrollView style={styles.container}>
+                <View style={styles.consumptionContainer}>
+                    <View style={styles.consumptionBox}>
+                        <MaterialCommunityIcons name="fuel" size={24} color="#E8364F" />
+                        <Text style={styles.consumptionValue}>8,9 l/100km</Text>
+                        <Text style={styles.consumptionText}>Średnie spalanie</Text>
                     </View>
-                    <View style={styles.consumptionBox}> // Tworzy View z ustawionym stylem 'consumptionBox'
-                        <MaterialCommunityIcons name="fire" size={24} color="#E8364F" /> // Wyświetla ikonę ognia
-                        <Text style={styles.consumptionValue}>9.0 l/100km</Text> // Wyświetla wartość ostatniego spalania
-                        <Text style={styles.consumptionText}>Ostatnie spalanie</Text> // Wyświetla tekst "Ostatnie spalanie"
+                    <View style={styles.consumptionBox}>
+                        <MaterialCommunityIcons name="fire" size={24} color="#E8364F" />
+                        <Text style={styles.consumptionValue}>9.0 l/100km</Text>
+                        <Text style={styles.consumptionText}>Ostatnie spalanie</Text>
                     </View>
                 </View>
-                <View style={styles.table}> // Tworzy View z ustawionym stylem 'table'
-                    <View style={styles.tableRow}> // Tworzy View z ustawionym stylem 'tableRow'
-                        <Text style={styles.tableHeader}>Data</Text> // Wyświetla nagłówek "Data"
-                        <Text style={styles.tableHeader}>Kwota</Text> // Wyświetla nagłówek "Kwota"
-                        <Text style={styles.tableHeader}>Waluta</Text> // Wyświetla nagłówek "Waluta"
-                        <Text style={styles.tableHeader}>Przebieg</Text> // Wyświetla nagłówek "Przebieg"
+                <View style={styles.table}>
+                    <View style={styles.tableRow}>
+                        <Text style={styles.tableHeader}>Data</Text>
+                        <Text style={styles.tableHeader}>Kwota</Text>
+                        <Text style={styles.tableHeader}>Waluta</Text>
+                        <Text style={styles.tableHeader}>Przebieg</Text>
                     </View>
-                    {mojeTankowania.map((tankowanie, index) => ( // Mapuje elementy tablicy 'mojeTankowania' na View
-                        <View key={index} style={styles.tableRow}> // Tworzy View z ustawionym stylem 'tableRow'
-                            <Text style={styles.tableCell}>{tankowanie.data}</Text> // Wyświetla wartość 'data' z obiektu 'tankowanie'
-                            <Text style={styles.tableCell}>{tankowanie.kwota.toFixed(2)}</Text> // Wyświetla wartość 'kwota' z obiektu 'tankowanie' z zaokrągleniem do dwóch miejsc po przecinku
-                            <Text style={styles.tableCell}>{tankowanie.waluta}</Text> // Wyświetla wartość 'waluta' z obiektu 'tankowanie'
-                            <Text style={styles.tableCell}>{tankowanie.przebieg}</Text> // Wyświetla wartość 'przebieg' z obiektu 'tankowanie'
+                    {mojeTankowania.map((tankowanie, index) => (
+                        <View key={index} style={styles.tableRow}>
+                            <Text style={styles.tableCell}>{tankowanie.data}</Text>
+                            <Text style={styles.tableCell}>{tankowanie.kwota.toFixed(2)}</Text>
+                            <Text style={styles.tableCell}>{tankowanie.waluta}</Text>
+                            <Text style={styles.tableCell}>{tankowanie.przebieg}</Text>
                         </View>
                     ))}
                 </View>
