@@ -9,16 +9,16 @@ interface DriverCost {
 }
 
 const driverCosts: DriverCost[] = [
-    { data: '2023-04-01', opis: 'Tankowanie', kwota: 300, waluta: 'PLN' },
-    { data: '2023-04-15', opis: 'Serwis', kwota: 450, waluta: 'PLN' },
-    { data: '2023-04-20', opis: 'Myjnia', kwota: 50, waluta: 'PLN' },
-    { data: '2023-05-02', opis: 'Wymiana opon', kwota: 800, waluta: 'PLN' },
-    { data: '2023-05-10', opis: 'Ubezpieczenie', kwota: 600, waluta: 'PLN' },
-    { data: '2023-05-20', opis: 'Parking', kwota: 30, waluta: 'PLN' },
-    { data: '2023-06-01', opis: 'Tankowanie', kwota: 320, waluta: 'PLN' },
-    { data: '2023-06-15', opis: 'Mandat', kwota: 150, waluta: 'PLN' },
-    { data: '2023-07-01', opis: 'Naprawa silnika', kwota: 1200, waluta: 'PLN' },
-    { data: '2023-07-15', opis: 'Tankowanie', kwota: 310, waluta: 'PLN' }
+    { data: '2023-04-01', opis: 'Jedzenie', kwota: 30, waluta: 'PLN' },
+    { data: '2023-04-03', opis: 'Nocleg', kwota: 120, waluta: 'PLN' },
+    { data: '2023-04-05', opis: 'Leki', kwota: 45, waluta: 'PLN' },
+    { data: '2023-04-10', opis: 'Ubrania', kwota: 200, waluta: 'PLN' },
+    { data: '2023-04-15', opis: 'Telefon komórkowy', kwota: 50, waluta: 'PLN' },
+    { data: '2023-04-20', opis: 'Transport publiczny', kwota: 60, waluta: 'PLN' },
+    { data: '2023-04-22', opis: 'Prezenty', kwota: 150, waluta: 'PLN' },
+    { data: '2023-04-25', opis: 'Rozrywka', kwota: 80, waluta: 'PLN' },
+    { data: '2023-04-30', opis: 'Książki', kwota: 90, waluta: 'PLN' },
+    { data: '2023-05-05', opis: 'Higiena', kwota: 70, waluta: 'PLN' }
 ];
 
 export const DriverCostsScreen: React.FC = () => {
