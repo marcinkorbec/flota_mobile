@@ -7,7 +7,7 @@ type SplashScreenProps = {
     navigation: StackNavigationProp<RootStackParamList, 'LoginScreen'>;
 };
 
-const SplashScreen: React.FC<SplashScreenProps> = ({ navigation }) => {
+export const SplashScreen: React.FC<SplashScreenProps> = ({ navigation }) => {
     useEffect(() => {
         setTimeout(() => {
             navigation.replace('LoginScreen');
@@ -31,4 +31,3 @@ const styles = StyleSheet.create({
     },
 });
 
-export default SplashScreen;

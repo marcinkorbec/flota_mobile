@@ -9,7 +9,7 @@ type SplashScreenProps = {
 };
 
 
-const LoginScreen: React.FC<SplashScreenProps> = ({ navigation }) => {
+export const LoginScreen: React.FC<SplashScreenProps> = ({ navigation }) => {
     const [username, setUsername] = useState('');
     const [password, setPassword] = useState('');
 
@@ -74,4 +74,3 @@ const styles = StyleSheet.create({
     },
 });
 
-export default LoginScreen;
