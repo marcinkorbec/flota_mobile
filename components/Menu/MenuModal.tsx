@@ -11,6 +11,12 @@ type CustomModalProps = {
 
 export const MenuModal: React.FC<CustomModalProps> = ({ menuVisible, setMenuVisible }) => {
 
+    const handleLogout = () => {
+        // Tutaj logika wylogowania, jeśli jest potrzebna
+
+        // Ustawienie menuVisible na false, aby zamknąć modal
+        setMenuVisible(false);
+    };
     const navigation = useNavigation<StackNavigationProp<RootStackParamList>>();
 
     return (
@@ -29,17 +35,8 @@ export const MenuModal: React.FC<CustomModalProps> = ({ menuVisible, setMenuVisi
                     >
                         <Text style={styles.closeButtonText}>x</Text>
                     </TouchableOpacity>
-                    <Text style={{ marginBottom: 20 }}>Wybierz widok do którego chcesz przejść:</Text>
-                    <TouchableOpacity style={styles.button} onPress={() => navigation.navigate('HomeScreen')}>
-                        <Text style={styles.buttonText}>Tankowania</Text>
-                    </TouchableOpacity>
-
-                    <TouchableOpacity style={styles.button} onPress={() => navigation.navigate('RoadFeesScreen')}>
-                        <Text style={styles.buttonText}>Koszty drogowe</Text>
-                    </TouchableOpacity>
-
-                    <TouchableOpacity style={styles.button}>
-                        <Text style={styles.buttonText}>Koszty własne</Text>
+                    <TouchableOpacity style={styles.button} onPress={() => { navigation.navigate('SplashScreen'); handleLogout(); }}>
+                        <Text style={styles.buttonText}>Wyloguj się!</Text>
                     </TouchableOpacity>
                 </View>
             </View>
@@ -61,8 +58,8 @@ const styles = StyleSheet.create({
         shadowOpacity: 0.3,
         shadowRadius: 5,
         elevation: 6,
-        height: '60%',
-        width: '100%',
+        height: '80%',
+        width: '84%',
         backgroundColor: 'white',
         alignItems: 'center',
         justifyContent: 'center',
@@ -74,6 +71,14 @@ const styles = StyleSheet.create({
         alignItems: 'center',
         borderRadius: 5,
         marginBottom: 15,
+        shadowColor: "#000",
+        shadowOffset: {
+            width: 0,
+            height: 4,
+        },
+        shadowOpacity: 0.5,
+        shadowRadius: 6.68,
+        elevation: 10,
     },
     buttonText: {
         color: 'white',
