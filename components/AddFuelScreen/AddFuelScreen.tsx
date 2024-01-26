@@ -1,329 +1,123 @@
 import React, { useEffect, useState } from 'react';
-import { Modal, View, Text, TextInput, StyleSheet, TouchableOpacity, ScrollView, Alert, Image } from 'react-native';
-import * as ImagePicker from 'expo-image-picker';
-//import DropDownPicker from 'react-native-dropdown-picker';
-import { AddFuelScreenNavigationProp, RootStackParamList } from '../../types/navigation-types';
-import { StackNavigationProp } from '@react-navigation/stack';
-import * as Location from 'expo-location';
+import { View, Text, TextInput, StyleSheet, TouchableOpacity, ScrollView, Alert, Image } from 'react-native';
+import { Picker } from '@react-native-picker/picker';
+import { pickImage } from '../utils/imagePicker';
+import { useLocationData } from '../hooks/useLocationData';
 
 
-interface AddFuelScreenProps {
-    navigation: StackNavigationProp<RootStackParamList, 'AddFuelScreen'>;
-}
-
-interface Tankowanie {
-    data: string;
-    kwota: number;
-    waluta: string;
-    przebieg: number;
+interface FuelingObject {
+    coordinates: string;
+    date: string;
+    country: string;
+    amount: number;
+    quantityLiters: number;
+    currency: string;
+    mileage: number;
+    paymentType: string;
     photo: string | null;
-    litry: number;
+    liters: number;
 }
 
-const isoCurrencyMap: { [key: string]: string } = {
-    'AL': 'ALL', // Albania
-    'AD': 'EUR', // Andora
-    'AT': 'EUR', // Austria
-    'BY': 'BYN', // Białoruś
-    'BE': 'EUR', // Belgia
-    'BA': 'BAM', // Bośnia i Hercegowina
-    'BG': 'BGN', // Bułgaria
-    'HR': 'HRK', // Chorwacja
-    'CY': 'EUR', // Cypr
-    'CZ': 'CZK', // Czechy
-    'DK': 'DKK', // Dania
-    'EE': 'EUR', // Estonia
-    'FI': 'EUR', // Finlandia
-    'FR': 'EUR', // Francja
-    'GR': 'EUR', // Grecja
-    'ES': 'EUR', // Hiszpania
-    'NL': 'EUR', // Holandia
-    'IE': 'EUR', // Irlandia
-    'IS': 'ISK', // Islandia
-    'LI': 'CHF', // Liechtenstein
-    'LT': 'EUR', // Litwa
-    'LU': 'EUR', // Luksemburg
-    'LV': 'EUR', // Łotwa
-    'MT': 'EUR', // Malta
-    'MD': 'MDL', // Mołdawia
-    'MC': 'EUR', // Monako
-    'DE': 'EUR', // Niemcy
-    'NO': 'NOK', // Norwegia
-    'PL': 'PLN', // Polska
-    'PT': 'EUR', // Portugalia
-    'RU': 'RUB', // Rosja
-    'RO': 'RON', // Rumunia
-    'SM': 'EUR', // San Marino
-    'RS': 'RSD', // Serbia
-    'SK': 'EUR', // Słowacja
-    'SI': 'EUR', // Słowenia
-    'CH': 'CHF', // Szwajcaria
-    'SE': 'SEK', // Szwecja
-    'TR': 'TRY', // Turcja
-    'UA': 'UAH', // Ukraina
-    'HU': 'HUF', // Węgry
-    'GB': 'GBP', // Wielka Brytania
-    'IT': 'EUR', // Włochy
-};
+export const AddFuelScreen = () => {
+    const { location, country, currency } = useLocationData();
 
-
-export const AddFuelScreen: React.FC<AddFuelScreenProps> = ({ navigation }) => {
-    const [tankowanie, setTankowanie] = useState<Tankowanie>({
-        data: '',
-        kwota: 0,
-        waluta: '',
-        przebieg: 0,
+    const [fueling, setFueling] = useState<FuelingObject>({
+        coordinates: '',
+        date: '',
+        country: '',
+        amount: 0,
+        quantityLiters: 0,
+        currency: '',
+        mileage: 0,
+        paymentType: '',
         photo: null,
-        litry: 0,
+        liters: 0,
     });
-    const [tempData, setTempData] = useState(tankowanie.data);
-    const [tempKwota, setTempKwota] = useState(tankowanie.kwota.toString());
-    const [tempPrzebieg, setTempPrzebieg] = useState(tankowanie.przebieg.toString());
-    const [tempWaluta, setTempWaluta] = useState(tankowanie.waluta);
-    const [tempLitry, setTempLitry] = useState(tankowanie.litry.toString());
-    const [location, setLocation] = useState<Location.LocationObject | null>(null);
-    const [country, setCountry] = useState<string | null>(null);
-    //const [payment, setPayment] = useState(false);
-    const [valuePayment, setValuePayment] = useState(null);
-    const [paymentType, setPaymentType] = useState('');
-    // const [itemsPayment, setItemsPayment] = useState([
-    //     { label: 'Gotówka', value: 'Gotówka' },
-    //     { label: 'Karta', value: 'Karta' },
-    //     { label: 'DKV', value: 'DKV' },
-    //     { label: 'ORLEN', value: 'ORLEN' },
-    // ]);
 
-    // const [fullTank, setFullTank] = useState(false);
-    // const [itemsFullTank, setItemsFullTank] = useState([
-    //     { label: 'Tak', value: true },
-    //     { label: 'Nie', value: false },
-    // ]);
-    // const [openFullTank, setOpenFullTank] = useState(false);
+    const [tempDate, setTempDate] = useState(fueling.date);
+    const [tempAmount, setTempAmount] = useState(fueling.amount.toString());
+    const [tempMileage, setTempMileage] = useState(fueling.mileage.toString());
+    const [tempCurrency, setTempCurrency] = useState(fueling.currency);
+    const [tempLiters, setTempLiters] = useState(fueling.liters.toString());
+    const [paymentType, setPaymentType] = useState('');
     const [isFullTank, setIsFullTank] = useState('');
 
-    // const handlePrzebiegChange = (text: string) => {
-    //     const cleanedText = text.replace(/[^0-9]/g, '');
-    //     const przebieg = cleanedText === '' ? '' : parseInt(cleanedText, 10).toString();
-    //     setTempPrzebieg(przebieg);
-    // };
-
-
-    // const handleKwotaChange = (text: string) => {
-    //     const kwota = text.trim() === '' ? '' : parseFloat(text).toString();
-    //     setTempKwota(kwota);
-    // };
-
-    // Ta funkcja obsługuje zmiany w polu "Typ płatności". 
-    // Sprawdza, czy wprowadzony tekst jest jednym z dozwolonych wartości: 'Karta', 'Gotówka', 'DKV', 'Dkv'.
-    // Jeśli tak, aktualizuje stan "paymentType" z nową wartością.
-    // W przeciwnym razie wyświetla alert z prośbą o wprowadzenie jednej z dozwolonych wartości.
-    const handlePaymentTypeChange = (text: string) => {
-        const validValues = ['Karta', 'Gotówka', 'DKV', 'Dkv'];
-        if (validValues.includes(text)) {
-            setPaymentType(text);
-        } else {
-            Alert.alert('Wpisz Karta, Gotówka, Dkv')
-        }
+    const handlePaymentTypeChange = (itemValue: string, itemIndex: number) => {
+        setPaymentType(itemValue);
     };
 
-    // Ta funkcja obsługuje zmiany w polu "Czy zatankowano do pełna". 
-    // Sprawdza, czy wprowadzony tekst jest jednym z dozwolonych wartości: 'Tak' lub 'Nie'.
-    // Jeśli tak, aktualizuje stan "isFullTank" z nową wartością.
-    const handleFullTankChange = (text: string) => {
-        const validValues = ['Tak', 'Nie'];
-        if (validValues.includes(text)) {
-            setIsFullTank(text);
-        }
+    const handleFullTankChange = (itemValue: string, itemIndex: number) => {
+        setIsFullTank(itemValue);
     };
 
-    const handleKwotaChange = (text: string) => {
-        const kwota = text.replace(/[^0-9.]/g, '').replace(/(\.\d{2})\d+/, '$1');
-        setTankowanie(prevState => ({ ...prevState, kwota: kwota !== '' ? parseFloat(kwota) : 0 }));
+    const handleAmountChange = (text: string) => {
+        const amount = text.replace(/[^0-9.]/g, '').replace(/(\.\d{2})\d+/, '$1');
+        setFueling(prevState => ({ ...prevState, amount: amount !== '' ? parseFloat(amount) : 0 }));
     };
 
-    // Ta funkcja obsługuje zmiany w polu "Litry". 
-    // Usuwa wszystkie znaki, które nie są cyframi lub kropką z wprowadzonego tekstu.
-    // Następnie zaokrągla wartość do dwóch miejsc po przecinku.
-    // Na koniec aktualizuje stan "tankowanie" z nową wartością "litry".
-    const handleLitryChange = (text: string) => {
-        const litry = text.replace(/[^0-9.]/g, '').replace(/(\.\d{2})\d+/, '$1');
-        setTankowanie(prevState => ({ ...prevState, litry: litry !== '' ? parseFloat(litry) : 0 }));
+    const handleLitersChange = (text: string) => {
+        const liters = text.replace(/[^0-9.]/g, '').replace(/(\.\d{2})\d+/, '$1');
+        setFueling(prevState => ({ ...prevState, liters: liters !== '' ? parseFloat(liters) : 0 }));
     };
 
-    // Ta funkcja obsługuje zmiany w polu "Przebieg". 
-    // Usuwa wszystkie znaki, które nie są cyframi z wprowadzonego tekstu.
-    // Następnie aktualizuje stan "tankowanie" z nową wartością "przebieg".
-    const handlePrzebiegChange = (text: string) => {
-        const przebieg = text.replace(/[^0-9]/g, '');
-        setTankowanie(prevState => ({ ...prevState, przebieg: przebieg !== '' ? parseInt(przebieg, 10) : 0 }));
+    const handleMileageChange = (text: string) => {
+        const mileage = text.replace(/[^0-9]/g, '');
+        setFueling(prevState => ({ ...prevState, mileage: mileage !== '' ? parseInt(mileage, 10) : 0 }));
     };
 
-    // Ta funkcja zapisuje dane wprowadzone przez użytkownika.
     const saveData = () => {
-        // Sprawdza, czy wszystkie pola zostały wypełnione.
-        // Jeśli jakiekolwiek pole jest puste, wyświetla alert i zwraca funkcję.
-        if (!tempData || !tempKwota || !tempPrzebieg || !tempWaluta || !tempLitry || valuePayment === null || valueFullTank === null) {
-            Alert.alert('Wszystkie pola są wymagane');
+        if (!tempDate || !tempAmount || !tempMileage || !tempCurrency || !tempLiters || paymentType === '') {
+            Alert.alert('Wszystkie pola są wymagane!');
             return;
         }
 
-        // Tworzy nowy obiekt "tankowanie" z aktualnymi danymi wprowadzonymi przez użytkownika.
-        const newTankowanie = {
-            ...tankowanie,
-            data: tempData,
-            kwota: parseFloat(tempKwota),
-            przebieg: parseInt(tempPrzebieg, 10),
-            waluta: tempWaluta,
-            litry: parseInt(tempLitry, 10),
+        const newFueling = {
+            ...fueling,
+            date: tempDate,
+            amount: parseFloat(tempAmount),
+            mileage: parseInt(tempMileage, 10),
+            currency: tempCurrency,
+            liters: parseInt(tempLiters, 10),
         };
 
-        // Aktualizuje stan "tankowanie" nowym obiektem.
-        setTankowanie(newTankowanie);
-        // Loguje nowy obiekt "tankowanie" do konsoli.
-        console.log(newTankowanie);
+        setFueling(newFueling);
+        console.log(newFueling);
     };
 
     useEffect(() => {
-        if (!tankowanie.data) {
+        if (!fueling.date) {
             const currentDate = new Date().toISOString().split('T')[0];
-            setTankowanie({ ...tankowanie, data: currentDate });
+            setFueling({ ...fueling, date: currentDate });
         }
-    }, [tankowanie, setTankowanie]);
-
-
-    // Ten kod jest hookiem efektu (useEffect) w React, który jest wywoływany, gdy obiekt tankowanie ulega zmianie.
-
-    // Wewnątrz hooku useEffect, aktualizuje on stan tymczasowych wartości (tempData, tempWaluta, tempKwota, tempPrzebieg, tempLitry) na podstawie aktualnych wartości w obiekcie tankowanie.
-
-    // Jeśli wartość kwota, przebieg lub litry jest większa od 0, jest ona konwertowana na string i zapisywana jako odpowiednia wartość tymczasowa. Jeśli nie, jako wartość tymczasową ustawiany jest pusty string.
-    useEffect(() => {
-        setTempData(tankowanie.data); // Ustawia wartość tempData na podstawie wartości tankowanie.data
-        setTempWaluta(tankowanie.waluta); // Ustawia wartość tempWaluta na podstawie wartości tankowanie.waluta
-        // Sprawdza, czy wartość tankowanie.kwota jest większa niż 0, jeśli tak, konwertuje ją na ciąg znaków (string) i ustawia dla tempKwota, w przeciwnym razie ustawia pusty ciąg znaków
-        setTempKwota(tankowanie.kwota > 0 ? tankowanie.kwota.toString() : '');
-        // Podobnie jak wyżej, dla wartości tankowanie.przebieg - konwertuje na string jeśli większa niż 0, w przeciwnym razie pusty ciąg
-        setTempPrzebieg(tankowanie.przebieg > 0 ? tankowanie.przebieg.toString() : '');
-        // Podobnie jak wyżej, dla wartości tankowanie.litry - konwertuje na string jeśli większa niż 0, w przeciwnym razie pusty ciąg
-        setTempLitry(tankowanie.litry > 0 ? tankowanie.litry.toString() : '');
-    }, [tankowanie]); // Hook useEffect jest wywoływany ponownie, gdy obiekt tankowanie ulegnie zmianie
-    
+    }, [fueling, setFueling]);
 
     useEffect(() => {
-        if (tankowanie.photo) {
-            Alert.alert("Zdjęcie zostało zaktualizowane");
-        }
-    }, [tankowanie.photo]);
-
+        setTempDate(fueling.date);
+        setTempCurrency(fueling.currency);
+        setTempAmount(fueling.amount > 0 ? fueling.amount.toString() : '');
+        setTempMileage(fueling.mileage > 0 ? fueling.mileage.toString() : '');
+        setTempLiters(fueling.liters > 0 ? fueling.liters.toString() : '');
+    }, [fueling]);
 
     useEffect(() => {
-        (async () => {
-            let { status } = await Location.requestForegroundPermissionsAsync();
-            if (status !== 'granted') {
-                Alert.alert('Brak uprawnień do odczytu lokalizacji');
-                return;
-            }
-
-            // Pobieranie aktualnej pozycji użytkownika
-            let location = await Location.getCurrentPositionAsync({});
-            // Zapisywanie pozycji użytkownika
-            setLocation(location);
-
-            // Jeżeli udało się pobrać lokalizację
-            if (location) {
-                // Próba odwrócenia geokodowania, aby uzyskać informacje o lokalizacji na podstawie współrzędnych
-                let reverseGeocode = await Location.reverseGeocodeAsync(location.coords);
-                // Logowanie wyników odwróconego geokodowania
-                console.log(reverseGeocode);
-                // Jeżeli udało się uzyskać informacje o kraju
-                if (reverseGeocode.length > 0 && reverseGeocode[0].country) {
-                    // Zapisywanie nazwy kraju
-                    setCountry(reverseGeocode[0].country);
-                } else {
-                    // Logowanie błędu, jeżeli nie udało się uzyskać informacji o kraju
-                    console.log('Nie udało się uzyskać danych kraju.');
-                }
-            }
-
-            if (location) {
-                // Wywołanie funkcji reverseGeocodeAsync z biblioteki Location, aby uzyskać informacje o lokalizacji na podstawie współrzędnych
-                let reverseGeocode = await Location.reverseGeocodeAsync(location.coords);
-                // Sprawdzenie, czy otrzymano jakiekolwiek dane i czy istnieje kod kraju ISO
-                if (reverseGeocode.length > 0 && reverseGeocode[0].isoCountryCode) {
-                    // Pobranie kodu kraju ISO
-                    const isoCountryCode = reverseGeocode[0].isoCountryCode;
-                    // Ustawienie nazwy kraju lub 'default', jeśli nazwa kraju nie jest dostępna
-                    setCountry(reverseGeocode[0].country || 'default');
-                    // Pobranie waluty na podstawie kodu kraju ISO
-                    const currency = isoCurrencyMap[isoCountryCode];
-                    // Jeśli waluta jest dostępna, ustawienie jej jako waluty tankowania
-                    if (currency) {
-                        setTankowanie(prevState => ({ ...prevState, waluta: currency }));
-                    }
-                }
-            }
-        })();
-    }, []);
-
-    const pickImage = async () => {
-        // Request permissions for camera and photo library
-        const cameraPermission = await ImagePicker.requestCameraPermissionsAsync();
-        const libraryPermission = await ImagePicker.requestMediaLibraryPermissionsAsync();
-
-        if (cameraPermission.status !== 'granted' || libraryPermission.status !== 'granted') {
-            Alert.alert('Przykro nam, potrzebujemy uprawnień do aparatu i biblioteki zdjęć!');
-            return;
+        if (fueling.photo) {
+            Alert.alert("Zdjęcie zostało dodane!");
         }
+    }, [fueling.photo]);
 
-        // Options for user: Take picture or get from gallery
-        const action = await new Promise((resolve) => {
-            Alert.alert(
-                "Dodaj zdjęcie",
-                "Wybierz metodę dodania zdjęcia",
-                [
-                    {
-                        text: "Zrób zdjęcie",
-                        onPress: () => resolve('capture'),
-                    },
-                    {
-                        text: "Wybierz z galerii",
-                        onPress: () => resolve('library'),
-                    },
-                    {
-                        text: "Anuluj",
-                        onPress: () => resolve(null),
-                        style: "cancel",
-                    },
-                ],
-                { cancelable: true }
-            );
-        });
-
-        let result;
-
-        if (action === 'capture') {
-            // The user selected the option to take a photo            
-            result = await ImagePicker.launchCameraAsync({
-                mediaTypes: ImagePicker.MediaTypeOptions.Images,
-                allowsEditing: false,
-                aspect: [4, 3],
-                quality: 1,
-            });
-        } else if (action === 'library') {
-            // The user chose the option to select a photo from the gallery
-            result = await ImagePicker.launchImageLibraryAsync({
-                mediaTypes: ImagePicker.MediaTypeOptions.Images,
-                allowsEditing: false,
-                aspect: [4, 3],
-                quality: 1,
-            });
+    useEffect(() => {
+        if (currency) {
+            setFueling(prevState => ({ ...prevState, currency: currency }));
         }
+    }, [currency]);
 
-        if (result && !result.canceled && result.assets && result.assets.length > 0) {
-            const successResult = result.assets[0].uri;
-            setTankowanie(prevState => ({ ...prevState, photo: successResult }));
-            console.log(successResult);
+    const handlePickImage = async () => {
+        const imageUri = await pickImage();
+        if (imageUri) {
+            setFueling(prevState => ({ ...prevState, photo: imageUri }));
         }
     };
+
 
     return (
         <ScrollView>
@@ -340,8 +134,8 @@ export const AddFuelScreen: React.FC<AddFuelScreenProps> = ({ navigation }) => {
                 <Text style={styles.label}>Data</Text>
                 <TextInput
                     style={styles.input}
-                    onChangeText={text => setTankowanie({ ...tankowanie, data: text })}
-                    value={tankowanie.data}
+                    onChangeText={text => setFueling({ ...fueling, date: text })}
+                    value={fueling.date}
                     placeholder="Data"
                 />
 
@@ -356,8 +150,8 @@ export const AddFuelScreen: React.FC<AddFuelScreenProps> = ({ navigation }) => {
                 <Text style={styles.label}>Kwota</Text>
                 <TextInput
                     style={styles.input}
-                    onChangeText={handleKwotaChange}
-                    value={tankowanie.kwota !== null && tankowanie.kwota !== 0 ? tankowanie.kwota.toString() : ''}
+                    onChangeText={handleAmountChange}
+                    value={fueling.amount !== null && fueling.amount !== 0 ? fueling.amount.toString() : ''}
                     placeholder="Wpisz kwote"
                     keyboardType="numeric"
                 />
@@ -366,8 +160,8 @@ export const AddFuelScreen: React.FC<AddFuelScreenProps> = ({ navigation }) => {
                 <Text style={styles.label}>Ilość litrów</Text>
                 <TextInput
                     style={styles.input}
-                    onChangeText={handleLitryChange}
-                    value={tankowanie.litry !== null && tankowanie.litry !== 0 ? tankowanie.litry.toString() : ''}
+                    onChangeText={handleLitersChange}
+                    value={fueling.liters !== null && fueling.liters !== 0 ? fueling.liters.toString() : ''}
                     placeholder="Wpisz ilość litrów"
                     keyboardType="numeric"
                 />
@@ -376,7 +170,7 @@ export const AddFuelScreen: React.FC<AddFuelScreenProps> = ({ navigation }) => {
                 <Text style={styles.label}>Waluta</Text>
                 <TextInput
                     style={styles.input}
-                    value={tankowanie.waluta}
+                    value={fueling.currency}
                     placeholder="Waluta"
                     editable={false}
                 />
@@ -384,70 +178,43 @@ export const AddFuelScreen: React.FC<AddFuelScreenProps> = ({ navigation }) => {
                 <Text style={styles.label}>Stan Licznika</Text>
                 <TextInput
                     style={styles.input}
-                    onChangeText={handlePrzebiegChange}
-                    value={tankowanie.przebieg !== null && tankowanie.przebieg !== 0 ? tankowanie.przebieg.toString() : ''}
+                    onChangeText={handleMileageChange}
+                    value={fueling.mileage !== null && fueling.mileage !== 0 ? fueling.mileage.toString() : ''}
                     placeholder="Wpisz przebieg"
                     keyboardType="numeric"
                 />
 
-
-                {/* <Text style={styles.label}>Karta/Gotówka</Text>
-                <View style={styles.pickerContainer}>
-                    <DropDownPicker
-                        style={styles.picker}
-                        open={payment}
-                        value={valuePayment}
-                        items={itemsPayment}
-                        setOpen={setPayment}
-                        setValue={setValuePayment}
-                        setItems={setItemsPayment}
-                        dropDownContainerStyle={{ width: '80%', marginLeft: "10%", marginRight: "10%" }}
-                        translation={{
-                            PLACEHOLDER: "Wybierz"
-                        }}
-                    />
-                </View>
-
-                <Text style={styles.label}>Tankowanie do pełna</Text>
-                <View style={styles.pickerContainer}>
-                    <DropDownPicker
-                        style={styles.picker}
-                        open={openFullTank}
-                        value={valueFullTank}
-                        items={itemsFullTank}
-                        setOpen={setOpenFullTank}
-                        setValue={setValueFullTank}
-                        setItems={setItemsFullTank}
-                        dropDownContainerStyle={{ width: '80%', marginLeft: "10%", marginRight: "10%" }}
-                        translation={{
-                            PLACEHOLDER: "Wybierz"
-                        }}
-                    />
-                </View> */}
-
                 <Text style={styles.label}>Karta/Gotówka</Text>
-                <TextInput
-                    style={styles.input}
-                    onChangeText={handlePaymentTypeChange}
-                    value={paymentType}
-                    placeholder="Karta/Gotówka/DKV"
-                />
+                <Picker
+                    selectedValue={paymentType}
+                    style={styles.picker}
+                    onValueChange={handlePaymentTypeChange}
+                >
+                    <Picker.Item style={styles.pickerItem} label="Wybierz" value="" />
+                    <Picker.Item label="Karta" value="Karta" style={styles.pickerItem} />
+                    <Picker.Item label="Gotówka" value="Gotówka" style={styles.pickerItem} />
+                    <Picker.Item label="DKV" value="DKV" style={styles.pickerItem} />
+                    <Picker.Item label="Orlen flota" value="Orlen flota" style={styles.pickerItem} />
+                </Picker>
 
                 <Text style={styles.label}>Tankowanie do pełna</Text>
-                <TextInput
-                    style={styles.input}
-                    onChangeText={handleFullTankChange}
-                    value={isFullTank}
-                    placeholder="Tak/Nie"
-                />
+                <Picker
+                    selectedValue={isFullTank}
+                    style={styles.picker}
+                    onValueChange={handleFullTankChange}
+                >
+                    <Picker.Item label="Wybierz" value="" style={styles.pickerItem} />
+                    <Picker.Item label="Tak" value="Tak" style={styles.pickerItem} />
+                    <Picker.Item label="Nie" value="Nie" style={styles.pickerItem} />
+                </Picker>
 
                 <Text style={styles.label}>Paragon</Text>
-                {tankowanie.photo && (
+                {fueling.photo && (
                     <View>
-                        <Image source={{ uri: tankowanie.photo }} style={{ width: 200, height: 200 }} />
+                        <Image source={{ uri: fueling.photo }} style={{ width: 250, height: 250, marginBottom: 20 }} />
                     </View>
                 )}
-                <TouchableOpacity style={styles.button} onPress={pickImage}>
+                <TouchableOpacity style={styles.button} onPress={handlePickImage}>
                     <Text style={styles.buttonText}>Dodaj zdjecie</Text>
                 </TouchableOpacity>
                 <TouchableOpacity style={styles.button} onPress={saveData}>
@@ -461,7 +228,15 @@ export const AddFuelScreen: React.FC<AddFuelScreenProps> = ({ navigation }) => {
 
 const styles = StyleSheet.create({
     modalView: { flex: 1, justifyContent: 'center', alignItems: 'center' },
-    input: { height: 50, borderColor: '#ddd', borderWidth: 1, width: '80%', marginBottom: 0, paddingLeft: 10, backgroundColor: 'white' },
+    input: {
+        height: 50,
+        borderColor: '#ddd',
+        borderWidth: 1,
+        width: '80%',
+        marginBottom: 0,
+        paddingLeft: 10,
+        backgroundColor: 'white'
+    },
     title: {
         fontSize: 20,
         fontWeight: 'bold',
@@ -474,8 +249,12 @@ const styles = StyleSheet.create({
         width: '80%',
         borderWidth: 1,
         borderColor: '#ddd',
+        backgroundColor: 'white',
         color: 'black',
         borderRadius: 0,
+    },
+    pickerItem: {
+        fontSize: 14,
     },
     buttonText: {
         color: 'white',
