@@ -1,12 +1,14 @@
-import { NavigationContainer, DefaultTheme } from '@react-navigation/native';
-import { StatusBar } from 'expo-status-bar';
-import { StyleSheet, Text, View } from 'react-native';
+import { NavigationContainer } from '@react-navigation/native';
 import { createStackNavigator } from '@react-navigation/stack';
-import SplashScreen from './components/SplashScreen/SplashScreen';
-import LoginScreen from './components/LoginScreen/LoginScreen';
+import { SplashScreen } from './components/SplashScreen/SplashScreen';
+import { LoginScreen } from './components/LoginScreen/LoginScreen';
 import { HomeScreen } from './components/HomeScreen/HomeScreen';
 import { RoadFeesScreen } from './components/RoadFeesScreen/RoadFeesScreen';
 import { AddFuelScreen } from './components/AddFuelScreen/AddFuelScreen';
+import { DriverCostsScreen } from './components/DriverCostsScreen/DriverCostsScreen';
+import { FuelingScreen } from './components/FuelingScreen/FuelingScreen';
+import { AddDriverCostScreen } from './components/DriverCostsScreen/AddDriverCostScreen';
+import { AddRoadFeesScreen } from './components/RoadFeesScreen/AddRoadFeesScreen';
 
 const Stack = createStackNavigator();
 
@@ -25,33 +27,19 @@ function MyStack() {
             <Stack.Screen name="HomeScreen" component={HomeScreen} options={{ title: 'Moje tankowania' }} />
             <Stack.Screen name="AddFuelScreen" component={AddFuelScreen} options={{ title: 'Nowe tankowanie', headerTitleAlign: 'center' }} />
             <Stack.Screen name="RoadFeesScreen" component={RoadFeesScreen} options={{ title: 'Koszty drogowe', headerTitleAlign: 'center' }} />
+            <Stack.Screen name="DriverCostsScreen" component={DriverCostsScreen} options={{ title: 'Koszty własne', headerTitleAlign: 'center' }} />
+            <Stack.Screen name="FuelingScreen" component={FuelingScreen} options={{ title: 'Historia tankowań', headerTitleAlign: 'center' }} />
+            <Stack.Screen name="AddDriverCostsScreen" component={AddDriverCostScreen} options={{ title: 'Nowy koszt własny', headerTitleAlign: 'center' }} />
+            <Stack.Screen name="AddRoadFeesScreen" component={AddRoadFeesScreen} options={{ title: 'Nowy koszt drogowy', headerTitleAlign: 'center' }} />
         </Stack.Navigator>
     );
 }
 
 export default function App() {
-    const MyTheme = {
-        ...DefaultTheme,
-        colors: {
-            ...DefaultTheme.colors,
-            primary: '#E8364F',
-        },
-    };
+
     return (
         <NavigationContainer >
             <MyStack />
         </NavigationContainer>
     );
 }
-
-const styles = StyleSheet.create({
-    container: {
-        flex: 1,
-        backgroundColor: 'dodgerblue',
-        alignItems: 'center',
-        justifyContent: 'center',
-        paddingLeft: 20,
-        paddingRight: 20,
-        border: '1x solid red',
-    },
-});
