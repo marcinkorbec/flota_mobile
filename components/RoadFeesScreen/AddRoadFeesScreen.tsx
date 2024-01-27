@@ -1,0 +1,116 @@
+import React, { useEffect, useState } from 'react';
+import { View, StyleSheet, Alert, ScrollView, TextInput } from 'react-native';
+import { useLocationData } from '../hooks/useLocationData';
+import { InputField } from '../Common/InputField';
+import { ImagePickerComponent } from '../Common/ImagePickerComponent';
+import { SaveButton } from '../Common/SaveButton';
+import { PaymentTypePicker } from '../Common/PaymentTypePicker';
+
+interface FeeObject {
+    coordinates: string;
+    date: string;
+    country: string | null;
+    amount: string;
+    currency: string | null;
+    paymentType: string;
+    description: string;
+    photo: string;
+}
+
+export const AddRoadFeesScreen = () => {
+    const { location, country, currency } = useLocationData();
+    const [photo, setPhoto] = useState<string>('');
+
+    const [fee, setFee] = useState<FeeObject>({
+        coordinates: '',
+        date: '',
+        country: country,
+        amount: '',
+        currency: currency,
+        paymentType: '',
+        description: '',
+        photo: '',
+    });
+
+    const inputFields = [
+        { placeholder: 'Data', value: fee.date, name: 'date', keyboardType: '', editable: false },
+        { placeholder: 'Kraj', value: fee.country || '', name: 'country', keyboardType: '', editable: false },
+        { placeholder: 'Kwota', value: fee.amount, name: 'amount', keyboardType: 'numeric', editable: true },
+        { placeholder: 'Waluta', value: fee.currency || '', name: 'currency', keyboardType: '', editable: false },
+        { placeholder: 'Opis', value: fee.description, name: 'description', keyboardType: '', editable: true },
+    ];
+
+    useEffect(() => {
+        const today = new Date().toISOString().split('T')[0];
+        setFee(prevState => ({
+            ...prevState,
+            date: today,
+            country: country || prevState.country,
+            currency: currency || prevState.currency,
+        }));
+        if (location) {
+            const coordinates = `${location.coords.latitude}, ${location.coords.longitude}`;
+            handleInputChange('coordinates', coordinates);
+        }
+    }, [country, currency, location]);
+
+    const handleInputChange = (name: string, value: string) => {
+        setFee(prevState => ({
+            ...prevState,
+            [name]: value
+        }));
+        console.log(fee);
+    };
+
+    useEffect(() => {
+        setFee(prevState => ({
+            ...prevState,
+            photo: photo
+        }));
+    }, [photo]);
+
+    const saveFee = () => {
+        console.log(fee);
+        Alert.alert('Koszt został dodany!', JSON.stringify(fee));
+    };
+
+    return (
+        <ScrollView >
+            <View style={styles.container}>
+                {inputFields.map(field => (
+                    <InputField
+                        key={field.name}
+                        placeholder={field.placeholder}
+                        value={field.value}
+                        onChangeText={text => handleInputChange(field.name, text)}
+                        label={field.placeholder}
+                        keyboardType={field.keyboardType}
+                        editable={field.editable}
+                    />
+                ))}
+
+                <PaymentTypePicker
+                    selectedValue={fee.paymentType}
+                    onValueChange={(itemValue) => handleInputChange('paymentType', itemValue)}
+                />
+
+                <ImagePickerComponent
+                    photo={photo}
+                    setPhoto={(newPhoto) => {
+                        setPhoto(newPhoto);
+                    }}
+                />
+
+                <SaveButton onPress={saveFee} />
+            </View>
+        </ScrollView>
+    );
+};
+
+const styles = StyleSheet.create({
+    container: {
+        flex: 1,
+        alignItems: 'center',
+        justifyContent: 'center',
+    },
+});
