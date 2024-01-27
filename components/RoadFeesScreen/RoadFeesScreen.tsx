@@ -35,9 +35,9 @@ export const RoadFeesScreen: React.FC = () => {
                     {roadFees.map((fee, index) => (
                         <View key={index} style={styles.tableRow}>
                             <Text style={styles.tableCell}>{fee.data}</Text>
-                            <Text style={styles.tableCell}>{fee.kraj}</Text>
                             <Text style={styles.tableCell}>{fee.kwota}</Text>
                             <Text style={styles.tableCell}>{fee.waluta}</Text>
+                            <Text style={styles.tableCell}>{fee.kraj}</Text>
                         </View>
                     ))}
                 </View>
