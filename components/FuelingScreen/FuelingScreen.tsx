@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import { View, Text, StyleSheet, ScrollView, TouchableOpacity, StatusBar } from 'react-native';
-import { MaterialCommunityIcons } from '@expo/vector-icons';
+//import { MaterialCommunityIcons } from '@expo/vector-icons';
 
 interface Tankowanie {
     data: string;
@@ -45,7 +45,7 @@ export const FuelingScreen = () => {
         <>
             <StatusBar barStyle="light-content" backgroundColor="#E8364F" />
             <ScrollView style={styles.container}>
-                <View style={styles.consumptionContainer}>
+                {/* <View style={styles.consumptionContainer}>
                     <View style={styles.consumptionBox}>
                         <MaterialCommunityIcons name="fuel" size={24} color="#E8364F" />
                         <Text style={styles.consumptionValue}>8,9 l/100km</Text>
@@ -56,7 +56,7 @@ export const FuelingScreen = () => {
                         <Text style={styles.consumptionValue}>9.0 l/100km</Text>
                         <Text style={styles.consumptionText}>Ostatnie spalanie</Text>
                     </View>
-                </View>
+                </View> */}
                 <View style={styles.table}>
                     <View style={styles.tableRow}>
                         <Text style={styles.tableHeader}>Data</Text>
