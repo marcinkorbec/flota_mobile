@@ -1,5 +1,5 @@
 import React from 'react';
-import { Text, StyleSheet, View } from 'react-native';
+import { Text, StyleSheet, View, Dimensions } from 'react-native';
 import { Picker } from '@react-native-picker/picker';
 
 interface PaymentTypePickerProps {
@@ -16,7 +16,7 @@ export const PaymentTypePicker: React.FC<PaymentTypePickerProps> = ({ selectedVa
                 <Picker
                     selectedValue={selectedValue}
                     onValueChange={onValueChange}
-                    >
+                >
                     <Picker.Item style={styles.pickerItem} label="Wybierz" value="" />
                     <Picker.Item style={styles.pickerItem} label="Karta" value="Karta" />
                     <Picker.Item style={styles.pickerItem} label="Gotówka" value="Gotówka" />
@@ -29,13 +29,13 @@ export const PaymentTypePicker: React.FC<PaymentTypePickerProps> = ({ selectedVa
 
 const styles = StyleSheet.create({
     pickerContainer: {
-        width: '80%',
-        marginBottom: 15,
+        width: Dimensions.get('window').width * 0.8,
+        marginBottom: 5,
     },
     label: {
         fontWeight: 'bold',
         marginBottom: 5,
-        marginTop: 10,
+        marginTop: 5,
         textAlign: "center",
     },
     picker: {
