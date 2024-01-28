@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { View, Text, StyleSheet, ScrollView, TouchableOpacity, StatusBar } from 'react-native';
+import { View, Text, StyleSheet, ScrollView, StatusBar } from 'react-native';
 //import { MaterialCommunityIcons } from '@expo/vector-icons';
 
 interface Tankowanie {
@@ -12,20 +12,18 @@ interface Tankowanie {
 }
 
 const mojeTankowania: Tankowanie[] = [
-    { data: '2023-04-01', kwota: 250.00, waluta: 'PLN', przebieg: 15000, photo: null, litry: 90 },
-    { data: '2023-04-01', kwota: 250.00, waluta: 'PLN', przebieg: 15000, photo: null, litry: 90 },
-    { data: '2023-04-01', kwota: 250.00, waluta: 'PLN', przebieg: 15000, photo: null, litry: 90 },
-    { data: '2023-04-01', kwota: 250.00, waluta: 'PLN', przebieg: 15000, photo: null, litry: 90 },
-    { data: '2023-04-01', kwota: 250.00, waluta: 'PLN', przebieg: 15000, photo: null, litry: 90 },
-    { data: '2023-04-01', kwota: 250.00, waluta: 'PLN', przebieg: 15000, photo: null, litry: 90 },
-    { data: '2023-04-01', kwota: 250.00, waluta: 'PLN', przebieg: 15000, photo: null, litry: 90 },
-    { data: '2023-04-01', kwota: 250.00, waluta: 'PLN', przebieg: 15000, photo: null, litry: 90 },
-    { data: '2023-04-01', kwota: 250.00, waluta: 'PLN', przebieg: 15000, photo: null, litry: 90 },
-    { data: '2023-04-01', kwota: 250.00, waluta: 'PLN', przebieg: 15000, photo: null, litry: 90 },
-    { data: '2023-04-01', kwota: 250.00, waluta: 'PLN', przebieg: 15000, photo: null, litry: 90 },
-    { data: '2023-04-01', kwota: 250.00, waluta: 'PLN', przebieg: 15000, photo: null, litry: 90 },
-    { data: '2023-04-01', kwota: 250.00, waluta: 'PLN', przebieg: 15000, photo: null, litry: 90 },
-    { data: '2023-04-01', kwota: 250.00, waluta: 'PLN', przebieg: 15000, photo: null, litry: 90 },
+    { data: '2023-04-01', kwota: 250.00, waluta: 'PLN', przebieg: 150800, photo: null, litry: 90 },
+    { data: '2023-04-01', kwota: 250.00, waluta: 'PLN', przebieg: 215000, photo: null, litry: 90 },
+    { data: '2023-04-01', kwota: 250.00, waluta: 'PLN', przebieg: 415000, photo: null, litry: 90 },
+    { data: '2023-04-01', kwota: 250.00, waluta: 'PLN', przebieg: 115000, photo: null, litry: 90 },
+    { data: '2023-04-01', kwota: 250.00, waluta: 'PLN', przebieg: 18568, photo: null, litry: 90 },
+    { data: '2023-04-01', kwota: 250.00, waluta: 'PLN', przebieg: 17897, photo: null, litry: 90 },
+    { data: '2023-04-01', kwota: 250.00, waluta: 'PLN', przebieg: 17356, photo: null, litry: 90 },
+    { data: '2023-04-01', kwota: 250.00, waluta: 'PLN', przebieg: 17152, photo: null, litry: 90 },
+    { data: '2023-04-01', kwota: 250.00, waluta: 'PLN', przebieg: 16895, photo: null, litry: 90 },
+    { data: '2023-04-01', kwota: 250.00, waluta: 'PLN', przebieg: 16589, photo: null, litry: 90 },
+    { data: '2023-04-01', kwota: 250.00, waluta: 'PLN', przebieg: 16234, photo: null, litry: 90 },
+    { data: '2023-04-01', kwota: 250.00, waluta: 'PLN', przebieg: 15800, photo: null, litry: 90 },
     { data: '2023-04-15', kwota: 310.00, waluta: 'PLN', przebieg: 15230, photo: null, litry: 90 },
     { data: '2023-04-15', kwota: 200.00, waluta: 'PLN', przebieg: 15230, photo: null, litry: 90 },
     { data: '2023-04-15', kwota: 100.00, waluta: 'PLN', przebieg: 15230, photo: null, litry: 90 },
@@ -61,15 +59,15 @@ export const FuelingScreen = () => {
                     <View style={styles.tableRow}>
                         <Text style={styles.tableHeader}>Data</Text>
                         <Text style={styles.tableHeader}>Kwota</Text>
-                        <Text style={styles.tableHeader}>Waluta</Text>
                         <Text style={styles.tableHeader}>Przebieg</Text>
+                        <Text style={styles.tableHeaderLast}>Litry</Text>
                     </View>
                     {mojeTankowania.map((tankowanie, index) => (
                         <View key={index} style={styles.tableRow}>
                             <Text style={styles.tableCell}>{tankowanie.data}</Text>
-                            <Text style={styles.tableCell}>{tankowanie.kwota.toFixed(2)}</Text>
-                            <Text style={styles.tableCell}>{tankowanie.waluta}</Text>
-                            <Text style={styles.tableCell}>{tankowanie.przebieg}</Text>
+                            <Text style={styles.tableCell}>{tankowanie.kwota.toFixed()} {tankowanie.waluta}</Text>
+                            <Text style={styles.tableCell}>{tankowanie.przebieg} km</Text>
+                            <Text style={styles.tableCellLast}>{tankowanie.litry.toFixed()} l</Text>
                         </View>
                     ))}
                 </View>
@@ -95,28 +93,21 @@ const styles = StyleSheet.create({
     },
     tableHeader: {
         fontWeight: 'bold',
-        flex: 1,
+        flex: 0.3,
+        padding: 5,
+    },
+    tableHeaderLast: {
+        fontWeight: 'bold',
+        flex: 0.15,
         padding: 5,
     },
     tableCell: {
-        flex: 1,
+        flex: 0.3,
         padding: 5,
     },
-    floatingButton: {
-        position: 'absolute',
-        width: 60,
-        height: 60,
-        alignItems: 'center',
-        justifyContent: 'center',
-        right: 30,
-        bottom: 30,
-        backgroundColor: '#E8364F',
-        borderRadius: 30,
-        elevation: 8,
-        shadowColor: '#000',
-        shadowOpacity: 0.3,
-        shadowOffset: { width: 0, height: 2 },
-        shadowRadius: 4,
+    tableCellLast: {
+        flex: 0.15,
+        padding: 5,
     },
     consumptionContainer: {
         flexDirection: 'row',
@@ -137,4 +128,3 @@ const styles = StyleSheet.create({
         color: '#665',
     },
 });
-
