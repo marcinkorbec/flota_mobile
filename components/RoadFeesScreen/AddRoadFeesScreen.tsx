@@ -33,11 +33,11 @@ export const AddRoadFeesScreen = () => {
     });
 
     const inputFields = [
-        { placeholder: 'Data', value: fee.date, name: 'date', keyboardType: '', editable: false },
-        { placeholder: 'Kraj', value: fee.country || '', name: 'country', keyboardType: '', editable: false },
-        { placeholder: 'Kwota', value: fee.amount, name: 'amount', keyboardType: 'numeric', editable: true },
-        { placeholder: 'Waluta', value: fee.currency || '', name: 'currency', keyboardType: '', editable: false },
-        { placeholder: 'Opis', value: fee.description, name: 'description', keyboardType: '', editable: true },
+        { label: 'Data', placeholder: '...', value: fee.date, name: 'date', keyboardType: '', editable: false },
+        { label: 'Kraj', placeholder: '...', value: fee.country || '', name: 'country', keyboardType: '', editable: false },
+        { label: 'Waluta', placeholder: '...', value: fee.currency || '', name: 'currency', keyboardType: '', editable: false },
+        { label: 'Kwota', placeholder: '...', value: fee.amount, name: 'amount', keyboardType: 'numeric', editable: true },
+        { label: 'Opis', placeholder: '...', value: fee.description, name: 'description', keyboardType: '', editable: true },
     ];
 
     useEffect(() => {
@@ -80,7 +80,7 @@ export const AddRoadFeesScreen = () => {
                 {inputFields.map(field => (
                     <InputField
                         key={field.name}
-                        placeholder={field.placeholder}
+                        placeholder=''
                         value={field.value}
                         onChangeText={text => handleInputChange(field.name, text)}
                         label={field.placeholder}
