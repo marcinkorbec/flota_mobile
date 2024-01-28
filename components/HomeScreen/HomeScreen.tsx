@@ -10,7 +10,15 @@ import { MenuModal } from '../Menu/MenuModal';
 
 type NavigationProp = StackNavigationProp<RootStackParamList, 'HomeScreen'>;
 
-const buttons = [
+type Button = {
+    screen: keyof RootStackParamList;
+    icon: string;
+    text: string;
+    iconSet: typeof FontAwesome | typeof FontAwesome5;
+    style?: object;
+};
+
+const buttons: Button[] = [
     { screen: 'AddFuelScreen', icon: 'gas-pump', text: 'Dodaj Tankowanie', iconSet: FontAwesome5 },
     { screen: 'AddRoadFeesScreen', icon: 'road', text: 'Dodaj koszt drogowy', iconSet: FontAwesome },
     { screen: 'AddDriverCostsScreen', icon: 'money-bill', text: 'Dodaj koszt własny', iconSet: FontAwesome5, style: { marginBottom: 30 } },
