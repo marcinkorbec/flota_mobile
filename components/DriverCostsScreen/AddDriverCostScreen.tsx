@@ -33,11 +33,11 @@ export const AddDriverCostScreen = () => {
     });
 
     const inputFields = [
-        { placeholder: 'Data', value: cost.date, name: 'date', keyboardType: '', editable: false },
-        { placeholder: 'Kraj', value: cost.country || '', name: 'country', keyboardType: '', editable: false },
-        { placeholder: 'Kwota', value: cost.amount, name: 'amount', keyboardType: 'numeric', editable: true },
-        { placeholder: 'Waluta', value: cost.currency || '', name: 'currency', keyboardType: '', editable: false },
-        { placeholder: 'Opis', value: cost.description, name: 'description', keyboardType: '', editable: true },
+        { label: 'Data', placeholder: '...', value: cost.date, name: 'date', keyboardType: '', editable: false },
+        { label: 'Kraj', placeholder: '...', value: cost.country || '', name: 'country', keyboardType: '', editable: false },
+        { label: 'Waluta', placeholder: '...', value: cost.currency || '', name: 'currency', keyboardType: '', editable: false },
+        { label: 'Kwota', placeholder: '...', value: cost.amount, name: 'amount', keyboardType: 'numeric', editable: true },
+        { label: 'Opis', placeholder: '...', value: cost.description, name: 'description', keyboardType: '', editable: true },
     ];
 
     useEffect(() => {
@@ -83,7 +83,7 @@ export const AddDriverCostScreen = () => {
                         placeholder={field.placeholder}
                         value={field.value}
                         onChangeText={text => handleInputChange(field.name, text)}
-                        label={field.placeholder}
+                        label={field.label}
                         keyboardType={field.keyboardType}
                         editable={field.editable}
                     />
