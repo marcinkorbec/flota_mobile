@@ -19,9 +19,11 @@ export const ImagePickerComponent: React.FC<ImagePickerComponentProps> = ({ phot
 
     return (
         <View style={styles.container}>
-                {photo && (
-                    <Image source={{ uri: photo }} style={styles.image} />
-                    )}
+            {photo && (
+                <Image source={{ uri: photo }} style={styles.image} />
+            )}
+
+            <Text style={styles.label}>Paragon</Text>
             <TouchableOpacity style={styles.button} onPress={handlePickImage}>
                 <Text style={styles.buttonText}>Dodaj zdjecie</Text>
             </TouchableOpacity>
@@ -46,7 +48,7 @@ const styles = StyleSheet.create({
         alignItems: 'center',
         borderRadius: 5,
         marginBottom: 15,
-        width: (window.width)*0.81,
+        width: (window.width) * 0.81,
     },
     buttonText: {
         color: 'white',
