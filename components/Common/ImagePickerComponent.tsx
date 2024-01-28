@@ -1,7 +1,6 @@
 import React from 'react';
 import { TouchableOpacity, Text, View, Image, StyleSheet, Dimensions } from 'react-native';
 import { pickImage } from '../utils/imagePicker';
-const window = Dimensions.get('window');
 
 
 interface ImagePickerComponentProps {
@@ -43,12 +42,22 @@ const styles = StyleSheet.create({
         textAlign: 'center'
     },
     button: {
+        textAlign: 'center',
+        alignItems: 'center',
         backgroundColor: '#E8364F',
         padding: 10,
-        alignItems: 'center',
+        margin: 5,
+        marginBottom: 10,
         borderRadius: 5,
-        marginBottom: 15,
-        width: (window.width) * 0.81,
+        width: Dimensions.get('window').width * 0.8,
+        shadowColor: "#000",
+        shadowOffset: {
+            width: 0,
+            height: 4,
+        },
+        shadowOpacity: 0.30,
+        shadowRadius: 4.65,
+        elevation: 8,
     },
     buttonText: {
         color: 'white',
