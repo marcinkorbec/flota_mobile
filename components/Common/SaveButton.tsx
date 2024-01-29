@@ -1,5 +1,5 @@
 import React from 'react';
-import { TouchableOpacity, Text, StyleSheet } from 'react-native';
+import { TouchableOpacity, Text, StyleSheet, Dimensions } from 'react-native';
 
 interface SaveButtonProps {
     onPress: () => void;
@@ -15,12 +15,22 @@ export const SaveButton: React.FC<SaveButtonProps> = ({ onPress }) => {
 
 const styles = StyleSheet.create({
     button: {
-        backgroundColor: '#E8364F',
-        width: "81%",
-        padding: 10,
+        textAlign: 'center',
         alignItems: 'center',
+        backgroundColor: '#E8364F',
+        padding: 10,
+        margin: 5,
+        marginBottom: 10,
         borderRadius: 5,
-        marginBottom: 15
+        width: Dimensions.get('window').width * 0.8,
+        shadowColor: "#000",
+        shadowOffset: {
+            width: 0,
+            height: 4,
+        },
+        shadowOpacity: 0.30,
+        shadowRadius: 4.65,
+        elevation: 8,
     },
     buttonText: {
         color: 'white',
