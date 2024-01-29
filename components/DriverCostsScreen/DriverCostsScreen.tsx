@@ -30,14 +30,12 @@ export const DriverCostsScreen: React.FC = () => {
                         <Text style={styles.tableHeader}>Data</Text>
                         <Text style={styles.tableHeader}>Opis</Text>
                         <Text style={styles.tableHeader}>Kwota</Text>
-                        <Text style={styles.tableHeader}>Waluta</Text>
                     </View>
                     {driverCosts.map((cost, index) => (
                         <View key={index} style={styles.tableRow}>
                             <Text style={styles.tableCell}>{cost.data}</Text>
                             <Text style={styles.tableCell}>{cost.opis}</Text>
-                            <Text style={styles.tableCell}>{cost.kwota}</Text>
-                            <Text style={styles.tableCell}>{cost.waluta}</Text>
+                            <Text style={styles.tableCell}>{cost.kwota} {cost.waluta}</Text>
                         </View>
                     ))}
                 </View>
