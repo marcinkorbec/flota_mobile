@@ -1,9 +1,11 @@
 import React, { useEffect, useState } from 'react';
-import { View, Text, TextInput, StyleSheet, TouchableOpacity, ScrollView, Alert, Image } from 'react-native';
+import { View, Text, TextInput, StyleSheet, TouchableOpacity, ScrollView, Alert, Image, Dimensions } from 'react-native';
 import { Picker } from '@react-native-picker/picker';
 import { pickImage } from '../utils/imagePicker';
 import { useLocationData } from '../hooks/useLocationData';
+import { PaymentTypePicker } from '../Common/PaymentTypePicker';
 
+type KeyboardTypeOptions = 'default' | 'numeric' | 'email-address' | 'phone-pad';
 
 interface FuelingObject {
     coordinates: string;
@@ -17,6 +19,23 @@ interface FuelingObject {
     photo: string | null;
     liters: number;
 }
+
+interface ReadOnlyInputProps {
+    label: string;
+    value: string | number | undefined;
+}
+
+const ReadOnlyInput = ({ label, value }: ReadOnlyInputProps) => (
+    <>
+        <Text style={styles.label}>{label}</Text>
+        <TextInput
+            style={styles.input}
+            value={value ? value.toString() : ''}
+            placeholder=""
+            editable={false}
+        />
+    </>
+);
 
 export const AddFuelScreen = () => {
     const { location, country, currency } = useLocationData();
@@ -50,6 +69,10 @@ export const AddFuelScreen = () => {
         setIsFullTank(itemValue);
     };
 
+    // Ta funkcja obsługuje zmianę wartości kwoty paliwa.
+    // Najpierw usuwa wszystkie znaki, które nie są cyframi lub kropką.
+    // Następnie ogranicza liczbę miejsc po przecinku do dwóch.
+    // Na koniec aktualizuje stan 'fueling' z nową wartością kwoty.
     const handleAmountChange = (text: string) => {
         const amount = text.replace(/[^0-9.]/g, '').replace(/(\.\d{2})\d+/, '$1');
         setFueling(prevState => ({ ...prevState, amount: amount !== '' ? parseFloat(amount) : 0 }));
@@ -73,11 +96,13 @@ export const AddFuelScreen = () => {
 
         const newFueling = {
             ...fueling,
+            coordinates: `${location?.coords.latitude}, ${location?.coords.longitude}`,
             date: tempDate,
             amount: parseFloat(tempAmount),
             mileage: parseInt(tempMileage, 10),
             currency: tempCurrency,
             liters: parseInt(tempLiters, 10),
+
         };
 
         setFueling(newFueling);
@@ -118,95 +143,49 @@ export const AddFuelScreen = () => {
         }
     };
 
+    const inputs = [
+        { label: 'Kwota', value: fueling.amount, handler: handleAmountChange, keyboardType: 'numeric' },
+        { label: 'Ilość litrów', value: fueling.liters, handler: handleLitersChange, keyboardType: 'numeric' },
+        { label: 'Stan Licznika', value: fueling.mileage, handler: handleMileageChange, keyboardType: 'numeric' },
+    ];
 
     return (
         <ScrollView>
-            <View style={styles.modalView}>
+            <View style={styles.container}>
 
-                {/* <Text style={styles.label}>Współrzędne</Text> */}
-                <TextInput
-                    style={{ ...styles.input, display: 'none' }}
-                    value={location ? `${location.coords.latitude}, ${location.coords.longitude}` : ''}
-                    placeholder="Współrzędne"
-                    editable={false}
-                />
+                <ReadOnlyInput label="Data" value={fueling.date} />
+                <ReadOnlyInput label="Kraj" value={country || undefined} />
+                <ReadOnlyInput label="Waluta" value={fueling.currency} />
 
-                <Text style={styles.label}>Data</Text>
-                <TextInput
-                    style={styles.input}
-                    onChangeText={text => setFueling({ ...fueling, date: text })}
-                    value={fueling.date}
-                    placeholder="Data"
-                />
+                {inputs.map(({ label, value, handler, keyboardType }, index) => (
+                    <View key={index}>
+                        <Text style={styles.label}>{label}</Text>
+                        <TextInput
+                            style={styles.input}
+                            onChangeText={handler}
+                            value={value !== null && value !== 0 ? value.toString() : ''}
+                            placeholder=""
+                            keyboardType={keyboardType as KeyboardTypeOptions}
+                        />
+                    </View>
+                ))}
 
-                <Text style={styles.label}>Kraj</Text>
-                <TextInput
-                    style={styles.input}
-                    value={country || undefined}
-                    placeholder="Kraj"
-                    editable={false}
-                />
-
-                <Text style={styles.label}>Kwota</Text>
-                <TextInput
-                    style={styles.input}
-                    onChangeText={handleAmountChange}
-                    value={fueling.amount !== null && fueling.amount !== 0 ? fueling.amount.toString() : ''}
-                    placeholder="Wpisz kwote"
-                    keyboardType="numeric"
-                />
-
-
-                <Text style={styles.label}>Ilość litrów</Text>
-                <TextInput
-                    style={styles.input}
-                    onChangeText={handleLitersChange}
-                    value={fueling.liters !== null && fueling.liters !== 0 ? fueling.liters.toString() : ''}
-                    placeholder="Wpisz ilość litrów"
-                    keyboardType="numeric"
-                />
-
-
-                <Text style={styles.label}>Waluta</Text>
-                <TextInput
-                    style={styles.input}
-                    value={fueling.currency}
-                    placeholder="Waluta"
-                    editable={false}
-                />
-
-                <Text style={styles.label}>Stan Licznika</Text>
-                <TextInput
-                    style={styles.input}
-                    onChangeText={handleMileageChange}
-                    value={fueling.mileage !== null && fueling.mileage !== 0 ? fueling.mileage.toString() : ''}
-                    placeholder="Wpisz przebieg"
-                    keyboardType="numeric"
-                />
-
-                <Text style={styles.label}>Karta/Gotówka</Text>
-                <Picker
+                <PaymentTypePicker
                     selectedValue={paymentType}
-                    style={styles.picker}
-                    onValueChange={handlePaymentTypeChange}
-                >
-                    <Picker.Item style={styles.pickerItem} label="Wybierz" value="" />
-                    <Picker.Item label="Karta" value="Karta" style={styles.pickerItem} />
-                    <Picker.Item label="Gotówka" value="Gotówka" style={styles.pickerItem} />
-                    <Picker.Item label="DKV" value="DKV" style={styles.pickerItem} />
-                    <Picker.Item label="Orlen flota" value="Orlen flota" style={styles.pickerItem} />
-                </Picker>
+                    onValueChange={(itemValue) => handlePaymentTypeChange(itemValue, 0)}
+                />
 
                 <Text style={styles.label}>Tankowanie do pełna</Text>
-                <Picker
-                    selectedValue={isFullTank}
-                    style={styles.picker}
-                    onValueChange={handleFullTankChange}
-                >
-                    <Picker.Item label="Wybierz" value="" style={styles.pickerItem} />
-                    <Picker.Item label="Tak" value="Tak" style={styles.pickerItem} />
-                    <Picker.Item label="Nie" value="Nie" style={styles.pickerItem} />
-                </Picker>
+                <View style={styles.picker}>
+                    <Picker
+                        selectedValue={isFullTank}
+                        onValueChange={handleFullTankChange}
+                    >
+                        <Picker.Item label="Wybierz" value="" style={styles.pickerItem} />
+                        <Picker.Item label="Tak" value="Tak" style={styles.pickerItem} />
+                        <Picker.Item label="Nie" value="Nie" style={styles.pickerItem} />
+                    </Picker>
+                </View>
 
                 <Text style={styles.label}>Paragon</Text>
                 {fueling.photo && (
@@ -227,13 +206,13 @@ export const AddFuelScreen = () => {
 
 
 const styles = StyleSheet.create({
-    modalView: { flex: 1, justifyContent: 'center', alignItems: 'center' },
+    container: { flex: 1, justifyContent: 'center', alignItems: 'center' },
     input: {
         height: 50,
         borderColor: '#ddd',
         borderWidth: 1,
-        width: '80%',
-        marginBottom: 0,
+        width: Dimensions.get('window').width * 0.8,
+        marginBottom: 5,
         paddingLeft: 10,
         backgroundColor: 'white'
     },
@@ -246,7 +225,7 @@ const styles = StyleSheet.create({
     picker: {
         marginLeft: 36,
         marginRight: 36,
-        width: '80%',
+        width: Dimensions.get('window').width * 0.8,
         borderWidth: 1,
         borderColor: '#ddd',
         backgroundColor: 'white',
@@ -257,21 +236,35 @@ const styles = StyleSheet.create({
         fontSize: 14,
     },
     buttonText: {
+        alignItems: 'center',
+        justifyContent: 'center',
+        textAlign: 'center',
         color: 'white',
         fontSize: 18,
     },
     button: {
-        backgroundColor: '#E8364F',
-        width: "81%",
-        padding: 10,
+        textAlign: 'center',
         alignItems: 'center',
+        backgroundColor: '#E8364F',
+        padding: 10,
+        margin: 5,
+        marginBottom: 10,
         borderRadius: 5,
-        marginBottom: 15
+        width: Dimensions.get('window').width * 0.8,
+        shadowColor: "#000",
+        shadowOffset: {
+            width: 0,
+            height: 4,
+        },
+        shadowOpacity: 0.30,
+        shadowRadius: 4.65,
+        elevation: 8,
     },
     label: {
         fontWeight: 'bold',
         marginBottom: 5,
-        marginTop: 10
+        marginTop: 0,
+        textAlign: 'center',
     },
     pickerContainer: {
         width: '100%',
