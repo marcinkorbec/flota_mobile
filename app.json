@@ -1,13 +1,13 @@
 {
   "expo": {
-    "name": "flota_mobile",
-    "slug": "flota_mobile",
+    "name": "NWB Flota Mobile",
+    "slug": "NWB Flota Mobile",
     "version": "1.0.0",
     "orientation": "portrait",
-    "icon": "./assets/icon.png",
+    "icon": "./assets/nwb.png",
     "userInterfaceStyle": "light",
     "splash": {
-      "image": "./assets/splash.png",
+      "image": "./assets/nwb.png",
       "resizeMode": "contain",
       "backgroundColor": "#ffffff"
     },
