@@ -22,7 +22,7 @@ function MyStack() {
                 headerTintColor: '#fff',
             }}
         >
-            <Stack.Screen name="SplashScreen" component={SplashScreen} options={{ headerShown: false }} />
+            {/* <Stack.Screen name="SplashScreen" component={SplashScreen} options={{ headerShown: false }} /> */}
             <Stack.Screen name="LoginScreen" component={LoginScreen} options={{ headerShown: false }} />
             <Stack.Screen name="HomeScreen" component={HomeScreen} options={{ title: 'Moje tankowania' }} />
             <Stack.Screen name="AddFuelScreen" component={AddFuelScreen} options={{ title: 'Nowe tankowanie', headerTitleAlign: 'center' }} />

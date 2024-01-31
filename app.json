@@ -1,7 +1,7 @@
 {
   "expo": {
     "name": "NWB Flota Mobile",
-    "slug": "NWB Flota Mobile",
+    "slug": "flota_mobile",
     "version": "1.0.0",
     "orientation": "portrait",
     "icon": "./assets/nwb.png",
@@ -19,7 +19,7 @@
     },
     "android": {
       "adaptiveIcon": {
-        "foregroundImage": "./assets/adaptive-icon.png",
+        "foregroundImage": "./assets/nwb.png",
         "backgroundColor": "#ffffff"
       },
       "package": "com.marcinkorbec.flota_mobile"
