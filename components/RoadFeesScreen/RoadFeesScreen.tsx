@@ -1,5 +1,6 @@
 import React from 'react';
 import { View, Text, StyleSheet, ScrollView } from 'react-native';
+import { SafeAreaView } from 'react-native-safe-area-context';
 
 interface RoadFee {
     data: string;
@@ -24,25 +25,27 @@ const roadFees: RoadFee[] = [
 export const RoadFeesScreen: React.FC = () => {
 
     return (
-        <ScrollView>
-            <View style={styles.container}>
-                <View style={styles.table}>
-                    <View style={styles.tableRow}>
-                        <Text style={styles.tableHeader}>Data</Text>
-                        <Text style={styles.tableHeader}>Opis</Text>
-                        <Text style={styles.tableHeader}>Kwota</Text>
-                        {/* <Text style={styles.tableHeader}>Waluta</Text> */}
-                    </View>
-                    {roadFees.map((fee, index) => (
-                        <View key={index} style={styles.tableRow}>
-                            <Text style={styles.tableCell}>{fee.data}</Text>
-                            <Text style={styles.tableCell}>{fee.opis}</Text>
-                            <Text style={styles.tableCell}>{fee.kwota} {fee.waluta}</Text>
+        <SafeAreaView>
+            <ScrollView>
+                <View style={styles.container}>
+                    <View style={styles.table}>
+                        <View style={styles.tableRow}>
+                            <Text style={styles.tableHeader}>Data</Text>
+                            <Text style={styles.tableHeader}>Opis</Text>
+                            <Text style={styles.tableHeader}>Kwota</Text>
+                            {/* <Text style={styles.tableHeader}>Waluta</Text> */}
                         </View>
-                    ))}
+                        {roadFees.map((fee, index) => (
+                            <View key={index} style={styles.tableRow}>
+                                <Text style={styles.tableCell}>{fee.data}</Text>
+                                <Text style={styles.tableCell}>{fee.opis}</Text>
+                                <Text style={styles.tableCell}>{fee.kwota} {fee.waluta}</Text>
+                            </View>
+                        ))}
+                    </View>
                 </View>
-            </View>
-        </ScrollView>
+            </ScrollView>
+        </SafeAreaView>
     );
 };
 

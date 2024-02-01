@@ -3,6 +3,7 @@ import { StackNavigationProp } from '@react-navigation/stack';
 import React, { useState } from 'react';
 import { View, TextInput, Button, StyleSheet, Text, TouchableOpacity, ImageBackground, StatusBar } from 'react-native';
 import { RootStackParamList } from '../../types/navigation-types';
+import { SafeAreaView } from 'react-native-safe-area-context';
 
 type SplashScreenProps = {
     navigation: StackNavigationProp<RootStackParamList, 'LoginScreen'>;
@@ -19,7 +20,7 @@ export const LoginScreen: React.FC<SplashScreenProps> = ({ navigation }) => {
     };
 
     return (
-        <>
+        <SafeAreaView>
             <StatusBar barStyle="dark-content" backgroundColor="transparent" />
             <ImageBackground
                 source={require('../../assets/Screenshot_9.png')}
@@ -44,7 +45,7 @@ export const LoginScreen: React.FC<SplashScreenProps> = ({ navigation }) => {
                     </TouchableOpacity>
                 </View>
             </ImageBackground>
-        </>
+        </SafeAreaView>
     );
 };
 

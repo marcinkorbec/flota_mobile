@@ -3,6 +3,7 @@ import { Text, View, TouchableOpacity, StyleSheet, Modal } from 'react-native';
 import { useNavigation } from '@react-navigation/native';
 import { StackNavigationProp } from '@react-navigation/stack';
 import { RootStackParamList } from '../../../types/navigation-types';
+import { SafeAreaView } from 'react-native-safe-area-context';
 
 type CustomModalProps = {
     modalVisible: boolean;
@@ -15,35 +16,37 @@ export const CustomModal: React.FC<CustomModalProps> = ({ modalVisible, setModal
     //const [modalVisible, setModalVisible] = useState(false);
 
     return (
-        <Modal
-            animationType="slide"
-            transparent={true}
-            visible={modalVisible}
-            onRequestClose={() => {
-                setModalVisible(!modalVisible);
-            }}>
-            <View style={styles.container}>
-                <View style={styles.box}>
-                    <TouchableOpacity
-                        style={styles.closeButton}
-                        onPress={() => setModalVisible(false)}
-                    >
-                        <Text style={styles.closeButtonText}>x</Text>
-                    </TouchableOpacity>
-                    <TouchableOpacity style={styles.button} onPress={() => navigation.navigate('AddFuelScreen')}>
-                        <Text style={styles.buttonText}>Dodaj tankowanie</Text>
-                    </TouchableOpacity>
+        <SafeAreaView>
+            <Modal
+                animationType="slide"
+                transparent={true}
+                visible={modalVisible}
+                onRequestClose={() => {
+                    setModalVisible(!modalVisible);
+                }}>
+                <View style={styles.container}>
+                    <View style={styles.box}>
+                        <TouchableOpacity
+                            style={styles.closeButton}
+                            onPress={() => setModalVisible(false)}
+                        >
+                            <Text style={styles.closeButtonText}>x</Text>
+                        </TouchableOpacity>
+                        <TouchableOpacity style={styles.button} onPress={() => navigation.navigate('AddFuelScreen')}>
+                            <Text style={styles.buttonText}>Dodaj tankowanie</Text>
+                        </TouchableOpacity>
 
-                    <TouchableOpacity style={styles.button}>
-                        <Text style={styles.buttonText}>Dodaj koszt drogowy</Text>
-                    </TouchableOpacity>
+                        <TouchableOpacity style={styles.button}>
+                            <Text style={styles.buttonText}>Dodaj koszt drogowy</Text>
+                        </TouchableOpacity>
 
-                    <TouchableOpacity style={styles.button}>
-                        <Text style={styles.buttonText}>Dodaj koszt własny</Text>
-                    </TouchableOpacity>
+                        <TouchableOpacity style={styles.button}>
+                            <Text style={styles.buttonText}>Dodaj koszt własny</Text>
+                        </TouchableOpacity>
+                    </View>
                 </View>
-            </View>
-        </Modal>
+            </Modal>
+        </SafeAreaView>
     );
 };
 

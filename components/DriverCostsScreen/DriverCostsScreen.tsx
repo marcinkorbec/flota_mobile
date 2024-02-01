@@ -1,5 +1,6 @@
 import React from 'react';
 import { View, Text, StyleSheet, ScrollView } from 'react-native';
+import { SafeAreaView } from 'react-native-safe-area-context';
 
 interface DriverCost {
     data: string;
@@ -23,24 +24,26 @@ const driverCosts: DriverCost[] = [
 
 export const DriverCostsScreen: React.FC = () => {
     return (
-        <ScrollView>
-            <View style={styles.container}>
-                <View style={styles.table}>
-                    <View style={styles.tableRow}>
-                        <Text style={styles.tableHeader}>Data</Text>
-                        <Text style={styles.tableHeader}>Opis</Text>
-                        <Text style={styles.tableHeader}>Kwota</Text>
-                    </View>
-                    {driverCosts.map((cost, index) => (
-                        <View key={index} style={styles.tableRow}>
-                            <Text style={styles.tableCell}>{cost.data}</Text>
-                            <Text style={styles.tableCell}>{cost.opis}</Text>
-                            <Text style={styles.tableCell}>{cost.kwota} {cost.waluta}</Text>
+        <SafeAreaView>
+            <ScrollView>
+                <View style={styles.container}>
+                    <View style={styles.table}>
+                        <View style={styles.tableRow}>
+                            <Text style={styles.tableHeader}>Data</Text>
+                            <Text style={styles.tableHeader}>Opis</Text>
+                            <Text style={styles.tableHeader}>Kwota</Text>
                         </View>
-                    ))}
+                        {driverCosts.map((cost, index) => (
+                            <View key={index} style={styles.tableRow}>
+                                <Text style={styles.tableCell}>{cost.data}</Text>
+                                <Text style={styles.tableCell}>{cost.opis}</Text>
+                                <Text style={styles.tableCell}>{cost.kwota} {cost.waluta}</Text>
+                            </View>
+                        ))}
+                    </View>
                 </View>
-            </View>
-        </ScrollView>
+            </ScrollView>
+        </SafeAreaView>
     );
 };
 

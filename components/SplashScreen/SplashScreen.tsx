@@ -2,6 +2,7 @@ import React, { useEffect } from 'react';
 import { View, Image, StyleSheet } from 'react-native';
 import { StackNavigationProp } from '@react-navigation/stack';
 import { RootStackParamList } from '../../types/navigation-types';
+import { SafeAreaView } from 'react-native-safe-area-context';
 
 type SplashScreenProps = {
     navigation: StackNavigationProp<RootStackParamList, 'LoginScreen'>;
@@ -15,9 +16,9 @@ export const SplashScreen: React.FC<SplashScreenProps> = ({ navigation }) => {
     }, []);
 
     return (
-        <View style={styles.container}>
+        <SafeAreaView style={styles.container}>
             <Image source={require('../../assets/nwb.png')} />
-        </View>
+        </SafeAreaView>
     );
 };
 

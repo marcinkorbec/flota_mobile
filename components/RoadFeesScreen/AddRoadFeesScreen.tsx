@@ -5,6 +5,7 @@ import { InputField } from '../Common/InputField';
 import { ImagePickerComponent } from '../Common/ImagePickerComponent';
 import { SaveButton } from '../Common/SaveButton';
 import { PaymentTypePicker } from '../Common/PaymentTypePicker';
+import { SafeAreaView } from 'react-native-safe-area-context';
 
 interface FeeObject {
     coordinates: string;
@@ -75,35 +76,37 @@ export const AddRoadFeesScreen = () => {
     };
 
     return (
-        <ScrollView >
-            <View style={styles.container}>
-                {inputFields.map(field => (
-                    <InputField
-                        key={field.name}
-                        placeholder={field.placeholder}
-                        value={field.value}
-                        onChangeText={text => handleInputChange(field.name, text)}
-                        label={field.label}
-                        keyboardType={field.keyboardType}
-                        editable={field.editable}
+        <SafeAreaView>
+            <ScrollView >
+                <View style={styles.container}>
+                    {inputFields.map(field => (
+                        <InputField
+                            key={field.name}
+                            placeholder={field.placeholder}
+                            value={field.value}
+                            onChangeText={text => handleInputChange(field.name, text)}
+                            label={field.label}
+                            keyboardType={field.keyboardType}
+                            editable={field.editable}
+                        />
+                    ))}
+
+                    <PaymentTypePicker
+                        selectedValue={fee.paymentType}
+                        onValueChange={(itemValue) => handleInputChange('paymentType', itemValue)}
                     />
-                ))}
 
-                <PaymentTypePicker
-                    selectedValue={fee.paymentType}
-                    onValueChange={(itemValue) => handleInputChange('paymentType', itemValue)}
-                />
+                    <ImagePickerComponent
+                        photo={photo}
+                        setPhoto={(newPhoto) => {
+                            setPhoto(newPhoto);
+                        }}
+                    />
 
-                <ImagePickerComponent
-                    photo={photo}
-                    setPhoto={(newPhoto) => {
-                        setPhoto(newPhoto);
-                    }}
-                />
-
-                <SaveButton onPress={saveFee} />
-            </View>
-        </ScrollView>
+                    <SaveButton onPress={saveFee} />
+                </View>
+            </ScrollView>
+        </SafeAreaView>
     );
 };
 

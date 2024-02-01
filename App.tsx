@@ -9,6 +9,8 @@ import { DriverCostsScreen } from './components/DriverCostsScreen/DriverCostsScr
 import { FuelingScreen } from './components/FuelingScreen/FuelingScreen';
 import { AddDriverCostScreen } from './components/DriverCostsScreen/AddDriverCostScreen';
 import { AddRoadFeesScreen } from './components/RoadFeesScreen/AddRoadFeesScreen';
+import { SafeAreaProvider } from 'react-native-safe-area-context';
+
 
 const Stack = createStackNavigator();
 
@@ -38,8 +40,11 @@ function MyStack() {
 export default function App() {
 
     return (
-        <NavigationContainer >
-            <MyStack />
-        </NavigationContainer>
+
+        <SafeAreaProvider>
+            <NavigationContainer >
+                <MyStack />
+            </NavigationContainer>
+        </SafeAreaProvider>
     );
 }

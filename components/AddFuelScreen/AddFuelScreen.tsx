@@ -4,6 +4,8 @@ import { Picker } from '@react-native-picker/picker';
 import { pickImage } from '../utils/imagePicker';
 import { useLocationData } from '../hooks/useLocationData';
 import { PaymentTypePicker } from '../Common/PaymentTypePicker';
+import { SafeAreaView } from 'react-native-safe-area-context';
+
 
 type KeyboardTypeOptions = 'default' | 'numeric' | 'email-address' | 'phone-pad';
 
@@ -150,57 +152,59 @@ export const AddFuelScreen = () => {
     ];
 
     return (
-        <ScrollView>
-            <View style={styles.container}>
+        <SafeAreaView>
+            <ScrollView>
+                <View style={styles.container}>
 
-                <ReadOnlyInput label="Data" value={fueling.date} />
-                <ReadOnlyInput label="Kraj" value={country || undefined} />
-                <ReadOnlyInput label="Waluta" value={fueling.currency} />
+                    <ReadOnlyInput label="Data" value={fueling.date} />
+                    <ReadOnlyInput label="Kraj" value={country || undefined} />
+                    <ReadOnlyInput label="Waluta" value={fueling.currency} />
 
-                {inputs.map(({ label, value, handler, keyboardType }, index) => (
-                    <View key={index}>
-                        <Text style={styles.label}>{label}</Text>
-                        <TextInput
-                            style={styles.input}
-                            onChangeText={handler}
-                            value={value !== null && value !== 0 ? value.toString() : ''}
-                            placeholder=""
-                            keyboardType={keyboardType as KeyboardTypeOptions}
-                        />
+                    {inputs.map(({ label, value, handler, keyboardType }, index) => (
+                        <View key={index}>
+                            <Text style={styles.label}>{label}</Text>
+                            <TextInput
+                                style={styles.input}
+                                onChangeText={handler}
+                                value={value !== null && value !== 0 ? value.toString() : ''}
+                                placeholder=""
+                                keyboardType={keyboardType as KeyboardTypeOptions}
+                            />
+                        </View>
+                    ))}
+
+                    <PaymentTypePicker
+                        selectedValue={paymentType}
+                        onValueChange={(itemValue) => handlePaymentTypeChange(itemValue, 0)}
+                    />
+
+                    <Text style={styles.label}>Tankowanie do pełna</Text>
+                    <View style={styles.picker}>
+                        <Picker
+                            selectedValue={isFullTank}
+                            onValueChange={handleFullTankChange}
+                        >
+                            <Picker.Item label="Wybierz" value="" style={styles.pickerItem} />
+                            <Picker.Item label="Tak" value="Tak" style={styles.pickerItem} />
+                            <Picker.Item label="Nie" value="Nie" style={styles.pickerItem} />
+                        </Picker>
                     </View>
-                ))}
 
-                <PaymentTypePicker
-                    selectedValue={paymentType}
-                    onValueChange={(itemValue) => handlePaymentTypeChange(itemValue, 0)}
-                />
-
-                <Text style={styles.label}>Tankowanie do pełna</Text>
-                <View style={styles.picker}>
-                    <Picker
-                        selectedValue={isFullTank}
-                        onValueChange={handleFullTankChange}
-                    >
-                        <Picker.Item label="Wybierz" value="" style={styles.pickerItem} />
-                        <Picker.Item label="Tak" value="Tak" style={styles.pickerItem} />
-                        <Picker.Item label="Nie" value="Nie" style={styles.pickerItem} />
-                    </Picker>
+                    <Text style={styles.label}>Paragon</Text>
+                    {fueling.photo && (
+                        <View>
+                            <Image source={{ uri: fueling.photo }} style={{ width: 250, height: 250, marginBottom: 20 }} />
+                        </View>
+                    )}
+                    <TouchableOpacity style={styles.button} onPress={handlePickImage}>
+                        <Text style={styles.buttonText}>Dodaj zdjecie</Text>
+                    </TouchableOpacity>
+                    <TouchableOpacity style={styles.button} onPress={saveData}>
+                        <Text style={styles.buttonText}>Wyślij dane</Text>
+                    </TouchableOpacity>
                 </View>
-
-                <Text style={styles.label}>Paragon</Text>
-                {fueling.photo && (
-                    <View>
-                        <Image source={{ uri: fueling.photo }} style={{ width: 250, height: 250, marginBottom: 20 }} />
-                    </View>
-                )}
-                <TouchableOpacity style={styles.button} onPress={handlePickImage}>
-                    <Text style={styles.buttonText}>Dodaj zdjecie</Text>
-                </TouchableOpacity>
-                <TouchableOpacity style={styles.button} onPress={saveData}>
-                    <Text style={styles.buttonText}>Wyślij dane</Text>
-                </TouchableOpacity>
-            </View>
-        </ScrollView>
+            </ScrollView>
+        </SafeAreaView>
     );
 };
 

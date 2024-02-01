@@ -3,6 +3,7 @@ import { Text, View, TouchableOpacity, StyleSheet, Modal } from 'react-native';
 import { useNavigation } from '@react-navigation/native';
 import { StackNavigationProp } from '@react-navigation/stack';
 import { RootStackParamList } from '../../types/navigation-types';
+import { SafeAreaView } from 'react-native-safe-area-context';
 
 type CustomModalProps = {
     menuVisible: boolean;
@@ -20,27 +21,29 @@ export const MenuModal: React.FC<CustomModalProps> = ({ menuVisible, setMenuVisi
     const navigation = useNavigation<StackNavigationProp<RootStackParamList>>();
 
     return (
-        <Modal
-            animationType="slide"
-            transparent={true}
-            visible={menuVisible}
-            onRequestClose={() => {
-                setMenuVisible(!menuVisible);
-            }}>
-            <View style={styles.container}>
-                <View style={styles.box}>
-                    <TouchableOpacity
-                        style={styles.closeButton}
-                        onPress={() => setMenuVisible(false)}
-                    >
-                        <Text style={styles.closeButtonText}>x</Text>
-                    </TouchableOpacity>
-                    <TouchableOpacity style={styles.button} onPress={() => { navigation.navigate('SplashScreen'); handleLogout(); }}>
-                        <Text style={styles.buttonText}>Wyloguj się!</Text>
-                    </TouchableOpacity>
+        <SafeAreaView>
+            <Modal
+                animationType="slide"
+                transparent={true}
+                visible={menuVisible}
+                onRequestClose={() => {
+                    setMenuVisible(!menuVisible);
+                }}>
+                <View style={styles.container}>
+                    <View style={styles.box}>
+                        <TouchableOpacity
+                            style={styles.closeButton}
+                            onPress={() => setMenuVisible(false)}
+                        >
+                            <Text style={styles.closeButtonText}>x</Text>
+                        </TouchableOpacity>
+                        <TouchableOpacity style={styles.button} onPress={() => { navigation.navigate('LoginScreen'); handleLogout(); }}>
+                            <Text style={styles.buttonText}>Wyloguj się!</Text>
+                        </TouchableOpacity>
+                    </View>
                 </View>
-            </View>
-        </Modal>
+            </Modal>
+        </SafeAreaView>
     );
 };
 

@@ -1,5 +1,6 @@
 import React, { useState } from 'react';
 import { View, Text, StyleSheet, ScrollView, StatusBar } from 'react-native';
+import { SafeAreaView } from 'react-native-safe-area-context';
 //import { MaterialCommunityIcons } from '@expo/vector-icons';
 
 interface Tankowanie {
@@ -40,7 +41,7 @@ export const FuelingScreen = () => {
 
 
     return (
-        <>
+        <SafeAreaView>
             <StatusBar barStyle="light-content" backgroundColor="#E8364F" />
             <ScrollView style={styles.container}>
                 {/* <View style={styles.consumptionContainer}>
@@ -72,7 +73,7 @@ export const FuelingScreen = () => {
                     ))}
                 </View>
             </ScrollView>
-        </>
+        </SafeAreaView>
     );
 };
 

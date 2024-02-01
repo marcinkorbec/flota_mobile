@@ -7,6 +7,7 @@ import { FontAwesome5 } from '@expo/vector-icons';
 import { StackNavigationProp } from '@react-navigation/stack';
 import { RootStackParamList } from '../../types/navigation-types';
 import { MenuModal } from '../Menu/MenuModal';
+import { SafeAreaView } from 'react-native-safe-area-context';
 
 type NavigationProp = StackNavigationProp<RootStackParamList, 'HomeScreen'>;
 
@@ -47,7 +48,7 @@ export const HomeScreen = () => {
     }, [navigation]);
 
     return (
-        <View style={styles.container}>
+        <SafeAreaView style={styles.container}>
             <StatusBar barStyle="light-content" backgroundColor="#E8364F" />
 
             <Text style={{ fontSize: 18, fontWeight: 'bold', marginBottom: 20 }}>Wybierz akcję:</Text>
@@ -62,7 +63,7 @@ export const HomeScreen = () => {
             }
 
             <MenuModal menuVisible={menuVisible} setMenuVisible={setMenuVisible} />
-        </View>
+        </SafeAreaView>
     );
 };
 
