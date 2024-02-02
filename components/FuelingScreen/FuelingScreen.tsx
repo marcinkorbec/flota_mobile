@@ -41,7 +41,7 @@ export const FuelingScreen = () => {
 
 
     return (
-        <SafeAreaView>
+        <>
             <StatusBar barStyle="light-content" backgroundColor="#E8364F" />
             <ScrollView style={styles.container}>
                 {/* <View style={styles.consumptionContainer}>
@@ -73,7 +73,8 @@ export const FuelingScreen = () => {
                     ))}
                 </View>
             </ScrollView>
-        </SafeAreaView>
+        </>
+
     );
 };
 

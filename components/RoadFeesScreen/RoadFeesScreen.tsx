@@ -25,7 +25,7 @@ const roadFees: RoadFee[] = [
 export const RoadFeesScreen: React.FC = () => {
 
     return (
-        <SafeAreaView>
+        <>
             <ScrollView>
                 <View style={styles.container}>
                     <View style={styles.table}>
@@ -45,7 +45,7 @@ export const RoadFeesScreen: React.FC = () => {
                     </View>
                 </View>
             </ScrollView>
-        </SafeAreaView>
+        </>
     );
 };
 

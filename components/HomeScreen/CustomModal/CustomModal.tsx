@@ -16,7 +16,7 @@ export const CustomModal: React.FC<CustomModalProps> = ({ modalVisible, setModal
     //const [modalVisible, setModalVisible] = useState(false);
 
     return (
-        <SafeAreaView>
+        <>
             <Modal
                 animationType="slide"
                 transparent={true}
@@ -46,7 +46,7 @@ export const CustomModal: React.FC<CustomModalProps> = ({ modalVisible, setModal
                     </View>
                 </View>
             </Modal>
-        </SafeAreaView>
+        </>
     );
 };
 

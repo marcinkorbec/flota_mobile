@@ -16,9 +16,9 @@ export const SplashScreen: React.FC<SplashScreenProps> = ({ navigation }) => {
     }, []);
 
     return (
-        <SafeAreaView style={styles.container}>
+        <View style={styles.container}>
             <Image source={require('../../assets/nwb.png')} />
-        </SafeAreaView>
+        </View>
     );
 };
 

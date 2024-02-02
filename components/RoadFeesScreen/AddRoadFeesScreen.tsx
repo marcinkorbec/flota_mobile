@@ -76,7 +76,7 @@ export const AddRoadFeesScreen = () => {
     };
 
     return (
-        <SafeAreaView>
+        <>
             <ScrollView >
                 <View style={styles.container}>
                     {inputFields.map(field => (
@@ -106,7 +106,7 @@ export const AddRoadFeesScreen = () => {
                     <SaveButton onPress={saveFee} />
                 </View>
             </ScrollView>
-        </SafeAreaView>
+        </>
     );
 };
 

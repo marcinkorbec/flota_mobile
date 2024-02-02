@@ -152,7 +152,7 @@ export const AddFuelScreen = () => {
     ];
 
     return (
-        <SafeAreaView>
+        <>
             <ScrollView>
                 <View style={styles.container}>
 
@@ -204,7 +204,7 @@ export const AddFuelScreen = () => {
                     </TouchableOpacity>
                 </View>
             </ScrollView>
-        </SafeAreaView>
+        </>
     );
 };
 

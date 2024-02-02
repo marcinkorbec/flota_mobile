@@ -21,7 +21,7 @@ export const MenuModal: React.FC<CustomModalProps> = ({ menuVisible, setMenuVisi
     const navigation = useNavigation<StackNavigationProp<RootStackParamList>>();
 
     return (
-        <SafeAreaView>
+        <>
             <Modal
                 animationType="slide"
                 transparent={true}
@@ -43,7 +43,7 @@ export const MenuModal: React.FC<CustomModalProps> = ({ menuVisible, setMenuVisi
                     </View>
                 </View>
             </Modal>
-        </SafeAreaView>
+        </>
     );
 };
 

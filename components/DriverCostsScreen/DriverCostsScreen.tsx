@@ -24,7 +24,7 @@ const driverCosts: DriverCost[] = [
 
 export const DriverCostsScreen: React.FC = () => {
     return (
-        <SafeAreaView>
+        <>
             <ScrollView>
                 <View style={styles.container}>
                     <View style={styles.table}>
@@ -43,7 +43,7 @@ export const DriverCostsScreen: React.FC = () => {
                     </View>
                 </View>
             </ScrollView>
-        </SafeAreaView>
+        </>
     );
 };
 

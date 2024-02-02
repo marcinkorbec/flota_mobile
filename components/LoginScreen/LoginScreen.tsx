@@ -20,7 +20,7 @@ export const LoginScreen: React.FC<SplashScreenProps> = ({ navigation }) => {
     };
 
     return (
-        <SafeAreaView>
+        <>
             <StatusBar barStyle="dark-content" backgroundColor="transparent" />
             <ImageBackground
                 source={require('../../assets/Screenshot_9.png')}
@@ -45,7 +45,7 @@ export const LoginScreen: React.FC<SplashScreenProps> = ({ navigation }) => {
                     </TouchableOpacity>
                 </View>
             </ImageBackground>
-        </SafeAreaView>
+        </>
     );
 };
 

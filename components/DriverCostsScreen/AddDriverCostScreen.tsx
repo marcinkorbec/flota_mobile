@@ -76,7 +76,7 @@ export const AddDriverCostScreen = () => {
     };
 
     return (
-        <SafeAreaView>
+        <>
             <ScrollView >
                 <View style={styles.container}>
                     {inputFields.map(field => (
@@ -106,7 +106,7 @@ export const AddDriverCostScreen = () => {
                     <SaveButton onPress={saveCost} />
                 </View>
             </ScrollView >
-        </SafeAreaView >
+        </ >
     );
 };
 

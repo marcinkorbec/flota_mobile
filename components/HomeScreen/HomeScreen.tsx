@@ -48,7 +48,7 @@ export const HomeScreen = () => {
     }, [navigation]);
 
     return (
-        <SafeAreaView style={styles.container}>
+        <View style={styles.container}>
             <StatusBar barStyle="light-content" backgroundColor="#E8364F" />
 
             <Text style={{ fontSize: 18, fontWeight: 'bold', marginBottom: 20 }}>Wybierz akcję:</Text>
@@ -63,7 +63,7 @@ export const HomeScreen = () => {
             }
 
             <MenuModal menuVisible={menuVisible} setMenuVisible={setMenuVisible} />
-        </SafeAreaView>
+        </View>
     );
 };
 
