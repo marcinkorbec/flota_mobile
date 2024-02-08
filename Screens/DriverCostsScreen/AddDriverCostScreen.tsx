@@ -1,33 +1,32 @@
 import React, { useEffect, useState } from 'react';
 import { View, StyleSheet, Alert, ScrollView } from 'react-native';
-import { useLocationData } from '../hooks/useLocationData';
-import { SaveButton } from '../Common/SaveButton';
-import { PaymentTypePicker } from '../Common/PaymentTypePicker';
-import { ImagePickerComponent } from "../Common/ImagePickerComponent";
-import { InputField } from '../Common/InputField';
-import { SafeAreaView } from 'react-native-safe-area-context';
+import { useLocationData } from '../../components/hooks/useLocationData';
+import { SaveButton } from '../../components/Common/SaveButton';
+import { PaymentTypePicker } from '../../components/Common/PaymentTypePicker';
+import { ImagePickerComponent } from '../../components/Common/ImagePickerComponent';
+import { InputField } from '../../components/Common/InputField';
 
-interface CostObject {
-    coordinates: string;
-    date: string;
-    country: string | null;
-    amount: string;
-    currency: string | null;
-    paymentType: string;
-    description: string;
-    photo: string;
-}
 
 export const AddDriverCostScreen = () => {
     const { location, country, currency } = useLocationData();
     const [photo, setPhoto] = useState<string>('');
+    interface CostObject {
+        coordinates: string;
+        date: string;
+        country: string;
+        amount: string;
+        currency: string;
+        paymentType: string;
+        description: string;
+        photo: string;
+    }
 
     const [cost, setCost] = useState<CostObject>({
         coordinates: '',
         date: '',
-        country: country,
+        country: country || '',
         amount: '',
-        currency: currency,
+        currency: currency || '',
         paymentType: '',
         description: '',
         photo: '',
@@ -84,13 +83,12 @@ export const AddDriverCostScreen = () => {
                             key={field.name}
                             placeholder={field.placeholder}
                             value={field.value}
-                            onChangeText={text => handleInputChange(field.name, text)}
+                            onChangeText={(text) => handleInputChange(field.name, text)}
                             label={field.label}
                             keyboardType={field.keyboardType}
                             editable={field.editable}
                         />
                     ))}
-
                     <PaymentTypePicker
                         selectedValue={cost.paymentType}
                         onValueChange={(itemValue) => handleInputChange('paymentType', itemValue)}
@@ -117,4 +115,3 @@ const styles = StyleSheet.create({
         justifyContent: 'center',
     },
 });
-
