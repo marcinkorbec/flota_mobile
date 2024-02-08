@@ -6,7 +6,7 @@ import { FontAwesome } from '@expo/vector-icons';
 import { FontAwesome5 } from '@expo/vector-icons';
 import { StackNavigationProp } from '@react-navigation/stack';
 import { RootStackParamList } from '../../types/navigation-types';
-import { MenuModal } from '../Menu/MenuModal';
+import { MenuModal } from '../../components/Menu/MenuModal';
 import { SafeAreaView } from 'react-native-safe-area-context';
 
 type NavigationProp = StackNavigationProp<RootStackParamList, 'HomeScreen'>;
