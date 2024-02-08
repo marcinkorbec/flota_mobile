@@ -1,11 +1,10 @@
 import React, { useEffect, useState } from 'react';
-import { View, StyleSheet, Alert, ScrollView, TextInput } from 'react-native';
-import { useLocationData } from '../hooks/useLocationData';
-import { InputField } from '../Common/InputField';
-import { ImagePickerComponent } from '../Common/ImagePickerComponent';
-import { SaveButton } from '../Common/SaveButton';
-import { PaymentTypePicker } from '../Common/PaymentTypePicker';
-import { SafeAreaView } from 'react-native-safe-area-context';
+import { View, StyleSheet, Alert, ScrollView } from 'react-native';
+import { useLocationData } from '../../components/hooks/useLocationData';
+import { InputField } from '../../components/Common/InputField';
+import { PaymentTypePicker } from '../../components/Common/PaymentTypePicker';
+import { ImagePickerComponent } from '../../components/Common/ImagePickerComponent';
+import { SaveButton } from '../../components/Common/SaveButton';
 
 interface FeeObject {
     coordinates: string;
