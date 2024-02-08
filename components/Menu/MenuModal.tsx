@@ -3,7 +3,6 @@ import { Text, View, TouchableOpacity, StyleSheet, Modal } from 'react-native';
 import { useNavigation } from '@react-navigation/native';
 import { StackNavigationProp } from '@react-navigation/stack';
 import { RootStackParamList } from '../../types/navigation-types';
-import { SafeAreaView } from 'react-native-safe-area-context';
 
 type CustomModalProps = {
     menuVisible: boolean;
