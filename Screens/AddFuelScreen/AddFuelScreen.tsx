@@ -1,10 +1,9 @@
 import React, { useEffect, useState } from 'react';
 import { View, Text, TextInput, StyleSheet, TouchableOpacity, ScrollView, Alert, Image, Dimensions } from 'react-native';
 import { Picker } from '@react-native-picker/picker';
-import { pickImage } from '../utils/imagePicker';
-import { useLocationData } from '../hooks/useLocationData';
-import { PaymentTypePicker } from '../Common/PaymentTypePicker';
-import { SafeAreaView } from 'react-native-safe-area-context';
+import { useLocationData } from '../../components/hooks/useLocationData';
+import { PaymentTypePicker } from '../../components/Common/PaymentTypePicker';
+import { pickImage } from '../../components/utils/imagePicker';
 
 
 type KeyboardTypeOptions = 'default' | 'numeric' | 'email-address' | 'phone-pad';
