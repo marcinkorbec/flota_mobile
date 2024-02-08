@@ -1,15 +1,15 @@
 import 'react-native-gesture-handler';
 import { NavigationContainer } from '@react-navigation/native';
 import { createStackNavigator } from '@react-navigation/stack';
-import { SplashScreen } from './components/SplashScreen/SplashScreen';
-import { LoginScreen } from './components/LoginScreen/LoginScreen';
-import { HomeScreen } from './components/HomeScreen/HomeScreen';
-import { RoadFeesScreen } from './components/RoadFeesScreen/RoadFeesScreen';
-import { AddFuelScreen } from './components/AddFuelScreen/AddFuelScreen';
-import { DriverCostsScreen } from './components/DriverCostsScreen/DriverCostsScreen';
-import { FuelingScreen } from './components/FuelingScreen/FuelingScreen';
-import { AddDriverCostScreen } from './components/DriverCostsScreen/AddDriverCostScreen';
-import { AddRoadFeesScreen } from './components/RoadFeesScreen/AddRoadFeesScreen';
+import { SplashScreen } from './Screens/SplashScreen/SplashScreen';
+import { LoginScreen } from './Screens/LoginScreen/LoginScreen';
+import { HomeScreen } from './Screens/HomeScreen/HomeScreen';
+import { RoadFeesScreen } from './Screens/RoadFeesScreen/RoadFeesScreen';
+import { AddFuelScreen } from './Screens/AddFuelScreen/AddFuelScreen';
+import { DriverCostsScreen } from './Screens/DriverCostsScreen/DriverCostsScreen';
+import { FuelingScreen } from './Screens/FuelingScreen/FuelingScreen';
+import { AddDriverCostScreen } from './Screens/DriverCostsScreen/AddDriverCostScreen';
+import { AddRoadFeesScreen } from './Screens/RoadFeesScreen/AddRoadFeesScreen';
 import { SafeAreaProvider } from 'react-native-safe-area-context';
 
 
